@@ -5,6 +5,8 @@ exports.successGetClientById = "la récupération du client by id_user est un su
 exports.successGetClientByNumeroClient ="la récupération du client by numéro client est un succés!"
 
 exports.successGetClientByNumeroPhone ="la récupération du client by numéro de téléphone est un succés!"
+
+exports.successGetClientByNom ="la récupération du client by nom est un succés!"
    
 exports.successGetAllClient = "La récupération de tous les clients est un succés !"
 
@@ -25,6 +27,8 @@ exports.errorGetAllClient = "La récupération de tous les clients à échoué !
 exports.errorGetClientById = 'ce n\'est pas le bon id_user du client!'
 
 exports.errorAucunClientByNumeroClient = "Aucun client trouvé par son numéro client!"
+
+exports.errorAucunClientByNom = "Aucun client trouvé par son nom!"
 
 exports.errorAucunClientByNumeroTelephone = "Aucun client trouvé par son numéro de téléphone!"
 

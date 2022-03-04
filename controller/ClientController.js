@@ -159,14 +159,20 @@ exports.getClientByCritere = (req, res) =>{
             }     
         })
     }else if(nom){
-        connection.query(`SELECT * FROM users WHERE  nom LIKE '${nom}%' `,(error, result, fields)=>{
-            console.log(nom)
-            if (result != undefined) {
-                res.status(201).json({result :result, message : userException.successGetClientByNumeroPhone})
-            }else{                 
-                res.status(400).json({error:error,message: userException.errorAucunClientByNumeroTelephone})
-            }     
-        })
+        if(nom.length < 3){
+            res.status(400).json({ message :"le nom doit contenir min 3 caractères"})
+        }else{
+            connection.query(`SELECT * FROM users WHERE  nom LIKE '${nom}%' `,(error, result, fields)=>{
+                console.log(nom)
+                if (result.length > 0) {
+                    res.status(201).json({result :result, message : userException.successGetClientByNom})
+                }else if(result.length === null || result.length < 0){                 
+                    res.status(400).json({error:error,message: userException.errorAucunClientByNom})
+                }else{                 
+                    res.status(400).json({error:error,message: userException.errorAucunClient})
+                }        
+            })
+        }
     }else{
         res.status(400).json({error : error, message: userException.errorAucunClient})
     }
