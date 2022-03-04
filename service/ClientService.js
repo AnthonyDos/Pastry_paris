@@ -13,15 +13,12 @@ exports.getClientByNumeroClient = 'SELECT * FROM users WHERE numero_client= ?'
 
 exports.getClientByPhone = 'SELECT * FROM users WHERE phone= ?'
 
+exports.getClientByEmail = 'SELECT * FROM users WHERE  email = ?'
+
+//exports.getClientByNom = "SELECT * FROM users WHERE  nom LIKE '%' "
+
 exports.getAllClientByCodePostal = 'SELECT * FROM users WHERE codePostal= ?'
 
-//{req, passWordEncrypted, numClient}
-//const test = require('../controller/ClientController.js');
-// console.log(test.nom)
-// console.log(test.req)
-// const nom = test.req.nom
-// const passwordEncrypted = test.passWordEncrypted
-// const numero_client = numClient
-// const clientModel = require('../model/ClientModel')
-// console.log(clientModel)
 exports.createClient = 'INSERT INTO users SET nom= ?, prenom= ?, email= ?, password= ?, phone= ?, adresse= ?, ville= ?, codePostal= ?, pays= ?, numero_client= ?'
+
+exports.connectClient = 'SELECT * FROM users WHERE email = ? '
