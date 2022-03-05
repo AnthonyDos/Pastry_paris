@@ -15,6 +15,8 @@ exports.successGetAllClientByCodePostal = "La récupération de tous les clients
 
 exports.successModification = "la modification est prise en compte"
 
+exports.successDeleteClient = "la suppression du client est un succés!"
+
 
 //Error
 
@@ -30,7 +32,7 @@ exports.errorClientEmailPasswordNoCorrespond = "Email et le mot de passe ne corr
 
 exports.errorGetAllClient = "La récupération de tous les clients à échoué !"
 
-exports.errorGetClientById = 'ce n\'est pas le bon id_user du client!'
+exports.errorGetClientById = 'Le client n\'a pas pu être récupérer !'
 
 exports.errorAucunClientByNumeroClient = "Aucun client trouvé par son numéro client!"
 
@@ -46,6 +48,8 @@ exports.errorCreateClientEmail = "le champs email est vide !"
 
 exports.errorClientEchecConnexion = "L'adresse email n existe pas ou le client est introuvable !"
 
-exports.errorEmailNotExist ="l'email n'existe pas."
+exports.errorEmailNotExist ="l'email n'existe pas!"
 
-exports.errorUpdateClient = "la modification n'est pas prise en compte"
+exports.errorUpdateClient = "la modification n'est pas prise en compte!"
+
+exports.errorDeleteClient = "La suppression du client n'a pas été prise en compte !"

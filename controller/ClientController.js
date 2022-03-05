@@ -12,7 +12,8 @@ const {
     getAllClientByCodePostal, 
     createClient, 
     connectClient, 
-    updateClient
+    updateClient,
+    deleteClient
 } = require('../service/ClientService');
 const {REGEX_EMAIL, REGEX_PASSWORD } =require('../config/Regex');
 
@@ -295,6 +296,25 @@ exports.updateClient = async (req, res) =>{
     })
 }
 
+exports.deleteClient = (req,res) =>{
+    connection.query(getClientById, [req.params.id_user],(error,result) =>{
+        if(error){
+            res.status(401).json({error: error, message: userException.errorGetClientById})
+        }else{
+            if(result[0] != undefined){
+                connection.query(deleteClient,[req.params.id_user],(error,result)=>{
+                    if(error){
+                        res.status(401).json({error: error, message : userException.errorDeleteClient})
+                    }else{
+                        res.status(201).json({success : true, message: userException.successDeleteClient})
+                    }
+                })
+            }else{
+                res.status(401).json({error: error, message: userException.errorGetClientById})
+            }
+        }
+    })
+}
 
 //     res.json(isError(member) ? error(member.message) : success(member))
 
