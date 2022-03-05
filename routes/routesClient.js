@@ -15,6 +15,7 @@ router.get('/getClient/numero-client/:numero_client',auth, client.getClientByCri
 //router.get('/getClient/:idBoutique/:numeroClient' ); //get par numéro de client
 router.get('/getClient/telephone/:phone',auth, client.getClientByCritere); // get par téléphone
 router.put('/putClient/:id_user', auth, client.updateClient);//modification du client par id
+router.put('/putClient/updatePassword/:id_user', auth, client.updateClientPassword);//modification du client par id
 router.delete('/deleteClient/:id_user', auth, client.deleteClient); //suppression du client par id
 
 module.exports = router;

@@ -17,6 +17,8 @@ exports.successModification = "la modification est prise en compte"
 
 exports.successDeleteClient = "la suppression du client est un succés!"
 
+exports.successUpdatePassword = "La modification du mot de passe est prise en compte !"
+
 
 //Error
 
@@ -53,3 +55,5 @@ exports.errorEmailNotExist ="l'email n'existe pas!"
 exports.errorUpdateClient = "la modification n'est pas prise en compte!"
 
 exports.errorDeleteClient = "La suppression du client n'a pas été prise en compte !"
+
+exports.errorUpdatePasswordClient = "La modification du mot de passe n'est pas prise en compte!"

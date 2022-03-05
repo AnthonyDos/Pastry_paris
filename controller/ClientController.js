@@ -13,7 +13,8 @@ const {
     createClient, 
     connectClient, 
     updateClient,
-    deleteClient
+    deleteClient,
+    UpdatePassword
 } = require('../service/ClientService');
 const {REGEX_EMAIL, REGEX_PASSWORD } =require('../config/Regex');
 
@@ -311,6 +312,36 @@ exports.deleteClient = (req,res) =>{
                 })
             }else{
                 res.status(401).json({error: error, message: userException.errorGetClientById})
+            }
+        }
+    })
+}
+
+exports.updateClientPassword = async (req, res) =>{
+    const encryptedPassword =   await  bcrypt.hash(req.body.password, 10);
+    const { password } =req.body
+    connection.query(getClientById,[req.params.id_user],(error,result)=>{
+        const recuperationPassword = result[0]
+        if(error){
+            res.status(401).json({error: error, message: userException.errorClientEchecConnexion})
+        }else{
+            if(password === null || password === ""){  
+                connection.query(UpdatePassword,[recuperationPassword.password,req.params.id_user],(error, result) =>{
+                    console.log(req.params.password)
+                    if(error){
+                        res.status(401).json({error: error, message: userException.errorUpdatePasswordClient})
+                    }else{
+                        res.status(201).json({result: result, message: userException.successUpdatePassword})
+                    }
+                })
+            }else{
+                connection.query(UpdatePassword,[encryptedPassword, req.params.id_user],(error, result) =>{
+                    if(error){
+                        res.status(401).json({error: error, message: userException.errorUpdatePasswordClient})
+                    }else{
+                        res.status(201).json({result: result, message: userException.successUpdatePassword})
+                    }
+                })
             }
         }
     })

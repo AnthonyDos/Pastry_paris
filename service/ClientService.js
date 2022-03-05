@@ -29,3 +29,5 @@ exports.connectClient = 'SELECT * FROM users WHERE email = ? '
 exports.updateClient = 'UPDATE users SET nom= ?, prenom= ?, email= ?, password= ?, phone= ?, adresse= ?, ville= ?, codePostal= ?, pays= ?, numero_client= ? WHERE id_user= ?'
 
 exports.deleteClient = "DELETE FROM users WHERE id_user= ?"
+
+exports.UpdatePassword = "UPDATE users SET password= ? WHERE id_user= ?"
