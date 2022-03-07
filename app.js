@@ -15,11 +15,7 @@ app.use(cors());
 
 //routes
 const clientRoutes = require('./routes/routesClient');
-// const carsRoutes = require('./routes/cars');
-// const routeAdmin = require('./routes/admin');
-// const routeLocation = require('./routes/location');
-// const routeMessage = require('./routes/message');
-// const routesOption = require('./routes/option');
+const reservationRoutes = require('./routes/routesReservation');
 
 //en-tête
 app.use((req, res, next) => {
@@ -34,6 +30,7 @@ app.use(helmet())
 //router
 //app.use('/images', express.static(path.join(__dirname +'/images')))
 app.use(baseUrl.clientUrl, clientRoutes);
+app.use(baseUrl.reservationUrl, reservationRoutes);
 // app.use('/api/cars', carsRoutes);
 // app.use('/api/admin',routeAdmin);
 // app.use('/api/location', routeLocation);

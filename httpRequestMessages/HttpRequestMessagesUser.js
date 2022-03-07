@@ -1,5 +1,7 @@
 //Success
-exports.successCreateClient = 'inscription pris en compte !'
+exports.successCreateClient = 'inscription prise en compte !'
+
+exports.successClientConnect = "Authentification réussi !"
 
 exports.successGetClientById = "la récupération du client by id_user est un succés!"
 
