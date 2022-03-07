@@ -10,7 +10,8 @@ exports.getAllReservation = (req, res) =>{
     const id_reservation = req.params.id_reservation
     const numeroReservation = req.params.numeroReservation
     const ville = req.params.ville
-    if (dateReservation) {  
+    const numero_client = req.params.numero_client
+    if (dateReservation && numero_client === undefined && numero_client === null) {  
         connection.query(getAllReservationByDate,[dateReservation],(error,result, fields)=>{
             if(error){
                 res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
@@ -22,7 +23,7 @@ exports.getAllReservation = (req, res) =>{
         connection.query(getReservationById,[id_reservation],(error,result, fields)=>{
             console.log(result)
 
-            if(result[0] != undefined){
+            if(result[0] != undefined || result < 0){
                 res.status(201).json({ result: result[0], message: httpRequestMessages.successGetAllReservation})
             }else{
                 res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
@@ -30,7 +31,7 @@ exports.getAllReservation = (req, res) =>{
         })
     }else if(numeroReservation){
         connection.query(getReservationByNumeroReservation,[numeroReservation],(error,result, fields)=>{
-            if(result[0] != undefined){
+            if(result[0] != undefined || result < 0){
                 res.status(201).json({ result: result[0], message: httpRequestMessages.successGetAllReservation})
             }else{
                 res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
@@ -38,22 +39,43 @@ exports.getAllReservation = (req, res) =>{
         })
     }else if(ville){
         connection.query(reservation.getReservationByVille,[ville],(error,result, fields)=>{
-            if(result != undefined){
+            if(result != undefined || result < 0){
                 res.status(201).json({ result: result, message: httpRequestMessages.successGetAllReservation})
             }else{
                 res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
             }
         })
-    }else{
+    }else if(numero_client && dateReservation === undefined && dateReservation === null){
+        console.log(numero_client)
+        connection.query(reservation.getReservationByNumeroClient,[numero_client],(error,result, fields)=>{
+            if(result != undefined || result < 0 ){
+                res.status(201).json({ result: result, message: httpRequestMessages.successGetAllReservation})
+            }else{
+                res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
+            }
+        })
+    }else if(numero_client && dateReservation ){
+        console.log(numero_client)
+        connection.query(reservation.getReservationByNumeroClientDateReservation,[numero_client, dateReservation],(error,result, fields)=>{
+            if(error){
+                res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
+            }else{
+                if(result.length < 1){
+                    res.status(404).json({error: error, message: httpRequestMessages.errorNoReservationClient})
+                }else{
+                    res.status(201).json({ result: result, message: httpRequestMessages.successGetAllReservation})
+                }
+            }
+        })
+    }else if(numero_client === null && numero_client === null && ville === null && numeroReservation === null && id_reservation === null && dateReservation === null){
         connection.query(reservation.getAllReservation,(error, result)=>{
             if(error){
                 res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
             }else{
-                res.status(201).json({result : result.length, message: httpRequestMessages.successGetAllReservation})
+                res.status(201).json({result : result, message: httpRequestMessages.successGetAllReservation})
             }
         })
     }
-    
 }
 
 exports.createReservation = (req,res)=>{
