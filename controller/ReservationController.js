@@ -5,13 +5,16 @@ const {getReservationById, getAllReservationByDate, getReservationByNumeroReserv
 
 
 
-exports.getAllReservation = (req, res) =>{
+exports.getReservationByCriteres = (req, res) =>{
     const dateReservation = req.params.dateReservation
     const id_reservation = req.params.id_reservation
     const numeroReservation = req.params.numeroReservation
     const ville = req.params.ville
     const numero_client = req.params.numero_client
-    if (dateReservation && numero_client === undefined && numero_client === null) {  
+    const idBoutique = req.params.idBoutique
+    const phone = req.params.phone
+    
+    if (dateReservation && numero_client === undefined && idBoutique === undefined) {  
         connection.query(getAllReservationByDate,[dateReservation],(error,result, fields)=>{
             if(error){
                 res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
@@ -45,10 +48,10 @@ exports.getAllReservation = (req, res) =>{
                 res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
             }
         })
-    }else if(numero_client && dateReservation === undefined && dateReservation === null){
+    }else if(numero_client && dateReservation === undefined){ 
         console.log(numero_client)
         connection.query(reservation.getReservationByNumeroClient,[numero_client],(error,result, fields)=>{
-            if(result != undefined || result < 0 ){
+            if(result != undefined || result > 0 ){
                 res.status(201).json({ result: result, message: httpRequestMessages.successGetAllReservation})
             }else{
                 res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
@@ -67,14 +70,55 @@ exports.getAllReservation = (req, res) =>{
                 }
             }
         })
-    }else if(numero_client === null && numero_client === null && ville === null && numeroReservation === null && id_reservation === null && dateReservation === null){
+    }else if(
+        numero_client === undefined 
+        && numero_client === undefined 
+        && phone === undefined 
+        && ville === undefined 
+        && numeroReservation === undefined 
+        && id_reservation === undefined 
+        && dateReservation === undefined 
+        && idBoutique === undefined
+    ){
         connection.query(reservation.getAllReservation,(error, result)=>{
             if(error){
                 res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
             }else{
                 res.status(201).json({result : result, message: httpRequestMessages.successGetAllReservation})
             }
+        })    
+    }else if(idBoutique && dateReservation === undefined){
+        connection.query(reservation.getAllReservationByIdBoutique,[idBoutique],(error, result)=>{
+            if(result){
+                console.log(result)
+                res.status(201).json({result: result, message: httpRequestMessages.successGetAllReservation})
+            }else{
+                console.log(error)
+                res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
+            }
         })
+    }else if(phone){
+        connection.query(reservation.getReservationByTelephone,[phone],(error, result)=>{
+            if(result){
+                console.log(result)
+                res.status(201).json({result: result, message: httpRequestMessages.successGetAllReservation})
+            }else{
+                console.log(error)
+                res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
+            }
+        })
+    }else if(idBoutique && dateReservation){
+        connection.query(reservation.getAllReservationByIdBoutiqueDateReservation,[idBoutique, dateReservation],(error, result)=>{
+            if(result){
+                console.log(result)
+                res.status(201).json({result: result, message: httpRequestMessages.successGetAllReservation})
+            }else{
+                console.log(error)
+                res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
+            }
+        })
+    }else{
+        res.status(404).json({message: httpRequestMessages.errorGetAllReservation})
     }
 }
 

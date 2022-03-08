@@ -95,7 +95,7 @@ exports.connectClient = async (req, res) =>{
     if(password.match(password_regex)){
         res.status(201).json        
     }else{ 
-        return res.status(400).json({err: err, message : httpRequestMessages.errorPasswordNoRespectRegex});
+        return res.status(400).json({ message : httpRequestMessages.errorPasswordNoRespectRegex});
     };
 
     let regexEmail = REGEX_EMAIL  
