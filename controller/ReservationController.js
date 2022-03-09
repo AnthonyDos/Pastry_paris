@@ -33,11 +33,7 @@ exports.getReservationByCriteres = (req, res) =>{
     }else if(ville){
         const ville = req.params.ville
         connection.query(reservation.getReservationByVille,[ville],(error,result, fields)=>{
-           // console.log(result)
-            // const test = result.filter(x=>x.ville =req.params.ville)
-            // console.log(test)
-            if(result.length > 0){
-                
+            if(result.length > 0){ 
                 res.status(201).json({ result: result, message: httpRequestMessages.successGetAllReservation})
             }else{
                 res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})

@@ -68,12 +68,10 @@ exports.createClient = async (req, res) =>{
                                         process.env.JWT_TOKEN,
                                         { expiresIn: '12h' }),
                                         "success": httpRequestMessages.successCreateClient
-                                }) 
-                                
+                                })      
                             }else{
                                 res.status(401).json({error: error, message: httpRequestMessages.errorClientEmailPasswordNoCorrespond})
                             }                            
-                            //res.status(201).json({result, message: httpRequestMessages.successCreateClient})
                         }
                     })                   
                 } 
@@ -152,10 +150,6 @@ exports.getAllClients = (req, res) =>{
 }
 
 exports.getClientByCritere = (req, res) =>{
-    // const id_user = req.params.id_user
-    // const numero_client = req.params.numero_client
-    // const phone = req.params.phone
-    // const nom = req.params.nom
     const { id_user, numero_client, phone, nom} = req.params
     if (id_user) {
         connection.query(getClientById,[id_user , numero_client],(error, result, fields)=>{
@@ -204,7 +198,6 @@ exports.getClientByCritere = (req, res) =>{
 exports.updateClient = async (req, res) =>{
     const encryptedPassword =   await  bcrypt.hash(req.body.password, 10);
     const {nom, prenom, email, password, phone, adresse, ville,codePostal, pays} =req.body
-    
     connection.query(getClientById,[req.params.id_user],(error,result)=>{
         const recuperationPassword = result[0].password
         const recuperationEmail = result[0].email
@@ -349,8 +342,3 @@ exports.updateClientPassword = async (req, res) =>{
         }
     })
 }
-
-//     res.json(isError(member) ? error(member.message) : success(member))
-
-
-// const allPostsSql= `SELECT posts.id_post,posts.imageProfile,users.imageProfile ,posts.username, posts.imageUrl,posts.isAdmin, posts.postUser, users.id_user, users.username,DATE_FORMAT(posts.date_post, '%d/%m/%Y %Hh%imin%ss') AS date_post FROM posts INNER JOIN users ON posts.id_user = users.id_user ORDER BY posts.date_post DESC; `
