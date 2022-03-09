@@ -14,8 +14,9 @@ exports.getReservationByCriteres = (req, res) =>{
             }
         })
     }else if(id_reservation){
+        const id_reservation =req.params.id_reservation
         connection.query(getReservationById,[id_reservation],(error,result, fields)=>{
-            if(result[0] != undefined || result < 0){
+            if(result.length > 0){
                 res.status(201).json({ result: result[0], message: httpRequestMessages.successGetAllReservation})
             }else{
                 res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
@@ -30,8 +31,13 @@ exports.getReservationByCriteres = (req, res) =>{
             }
         })
     }else if(ville){
+        const ville = req.params.ville
         connection.query(reservation.getReservationByVille,[ville],(error,result, fields)=>{
-            if(result != undefined || result < 0){
+           // console.log(result)
+            // const test = result.filter(x=>x.ville =req.params.ville)
+            // console.log(test)
+            if(result.length > 0){
+                
                 res.status(201).json({ result: result, message: httpRequestMessages.successGetAllReservation})
             }else{
                 res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
@@ -39,7 +45,7 @@ exports.getReservationByCriteres = (req, res) =>{
         })
     }else if(numero_client && dateReservation === undefined){ 
         connection.query(reservation.getReservationByNumeroClient,[numero_client],(error,result, fields)=>{
-            if(result != undefined || result > 0 ){
+            if(result.length > 0 ){
                 res.status(201).json({ result: result, message: httpRequestMessages.successGetAllReservation})
             }else{
                 res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
@@ -92,7 +98,7 @@ exports.getReservationByCriteres = (req, res) =>{
         })
     }else if(idBoutique && dateReservation){
         connection.query(reservation.getAllReservationByIdBoutiqueDateReservation,[idBoutique, dateReservation],(error, result)=>{
-            if(result){
+            if(result.length > 0){
                 res.status(201).json({result: result, message: httpRequestMessages.successGetAllReservation})
             }else{
                 res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
@@ -131,5 +137,28 @@ exports.updateReservationByCritere = (req, res) =>{
             res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
         }
     })
+}
+
+exports.deleteReservation = (req, res) =>{
+    const{ id_reservation, numeroReservation} = req.params
+    if(id_reservation){
+        connection.query(reservation.deleteReservationByIdReservation,[id_reservation],(error,result)=>{
+            if(result.affectedRows === 0){        
+                res.status(404).json({error : error, message: httpRequestMessages.errorDeleteReservation})
+            }else{
+                res.status(201).json({ message: httpRequestMessages.successDeleteReservation})
+            }
+        })  
+    }else if(numeroReservation){
+        connection.query(reservation.deleteReservationByNumeroReservation,[numeroReservation],(error,result)=>{
+            if(result.affectedRows === 0){      
+                res.status(404).json({error : error, message: httpRequestMessages.errorDeleteReservation})
+            }else{
+                res.status(201).json({ message: httpRequestMessages.successDeleteReservation})
+            }
+        })  
+    }else{
+        res.status(404).json({error : error, message: httpRequestMessages.errorDeleteReservation})
+    }
 }
 

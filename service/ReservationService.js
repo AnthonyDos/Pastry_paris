@@ -26,7 +26,9 @@ exports.getAllReservationByIdBoutiqueDateReservation = "SELECT * FROM reservatio
 //modification
 exports.updateReservationByNumeroReservation = "UPDATE reservation SET dateDuJour= ?, reservation.nombreCouverts= ?, reservation.dateReservation= ?, reservation.horaire= ?, reservation.numeroReservation= ?, reservation.idBoutique= ?, reservation.id_user= ? WHERE reservation.numeroReservation= ? "
 
-
+//suppression
+exports.deleteReservationByIdReservation = "DELETE FROM reservation WHERE id_reservation= ?"
+exports.deleteReservationByNumeroReservation = "DELETE FROM reservation WHERE numeroReservation= ?"
 
 //DATE_FORMAT (location.dateLocation, '%d/%m/%Y') AS dateLocation
 
