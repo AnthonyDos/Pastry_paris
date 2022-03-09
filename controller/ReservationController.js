@@ -3,17 +3,8 @@ const reservation = require('../service/ReservationService');
 const httpRequestMessages = require('../httpRequestMessages/HttpRequestMessagesReservation')
 const {getReservationById, getAllReservationByDate, getReservationByNumeroReservation}= require('../service/ReservationService');
 
-
-
 exports.getReservationByCriteres = (req, res) =>{
-    const dateReservation = req.params.dateReservation
-    const id_reservation = req.params.id_reservation
-    const numeroReservation = req.params.numeroReservation
-    const ville = req.params.ville
-    const numero_client = req.params.numero_client
-    const idBoutique = req.params.idBoutique
-    const phone = req.params.phone
-    
+    const { dateReservation, id_reservation, numeroReservation, ville, numero_client, idBoutique, phone} = req.params
     if (dateReservation && numero_client === undefined && idBoutique === undefined) {  
         connection.query(getAllReservationByDate,[dateReservation],(error,result, fields)=>{
             if(error){
@@ -24,8 +15,6 @@ exports.getReservationByCriteres = (req, res) =>{
         })
     }else if(id_reservation){
         connection.query(getReservationById,[id_reservation],(error,result, fields)=>{
-            console.log(result)
-
             if(result[0] != undefined || result < 0){
                 res.status(201).json({ result: result[0], message: httpRequestMessages.successGetAllReservation})
             }else{
@@ -49,7 +38,6 @@ exports.getReservationByCriteres = (req, res) =>{
             }
         })
     }else if(numero_client && dateReservation === undefined){ 
-        console.log(numero_client)
         connection.query(reservation.getReservationByNumeroClient,[numero_client],(error,result, fields)=>{
             if(result != undefined || result > 0 ){
                 res.status(201).json({ result: result, message: httpRequestMessages.successGetAllReservation})
@@ -58,7 +46,6 @@ exports.getReservationByCriteres = (req, res) =>{
             }
         })
     }else if(numero_client && dateReservation ){
-        console.log(numero_client)
         connection.query(reservation.getReservationByNumeroClientDateReservation,[numero_client, dateReservation],(error,result, fields)=>{
             if(error){
                 res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
@@ -90,30 +77,24 @@ exports.getReservationByCriteres = (req, res) =>{
     }else if(idBoutique && dateReservation === undefined){
         connection.query(reservation.getAllReservationByIdBoutique,[idBoutique],(error, result)=>{
             if(result){
-                console.log(result)
                 res.status(201).json({result: result, message: httpRequestMessages.successGetAllReservation})
             }else{
-                console.log(error)
                 res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
             }
         })
     }else if(phone){
         connection.query(reservation.getReservationByTelephone,[phone],(error, result)=>{
             if(result){
-                console.log(result)
                 res.status(201).json({result: result, message: httpRequestMessages.successGetAllReservation})
             }else{
-                console.log(error)
                 res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
             }
         })
     }else if(idBoutique && dateReservation){
         connection.query(reservation.getAllReservationByIdBoutiqueDateReservation,[idBoutique, dateReservation],(error, result)=>{
             if(result){
-                console.log(result)
                 res.status(201).json({result: result, message: httpRequestMessages.successGetAllReservation})
             }else{
-                console.log(error)
                 res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
             }
         })
@@ -123,12 +104,7 @@ exports.getReservationByCriteres = (req, res) =>{
 }
 
 exports.createReservation = (req,res)=>{
-    const numeroReservation = req.body.numeroReservation;
-    const id_user = req.body.id_user;
-    const idBoutique = req.body.idBoutique;
-    const horaire = req.body.horaire;
-    const dateReservation = req.body.dateReservation;
-    const nombreCouverts = req.body.nombreCouverts;
+    const {numeroReservation, id_user, idBoutique, horaire, dateReservation, nombreCouverts} = req.body
     connection.query(reservation.createReservation,[numeroReservation,id_user, idBoutique, horaire,dateReservation, nombreCouverts],(error,result)=>{
         if(error){
             res.status(404).json({error : error, message: httpRequestMessages.errorCreateReservation})
@@ -137,3 +113,23 @@ exports.createReservation = (req,res)=>{
         }
     })
 }
+
+exports.updateReservationByCritere = (req, res) =>{
+    const numeroReservation = req.params.numeroReservation
+    connection.query(reservation.getReservationByNumeroReservation,[numeroReservation],(error,result, fields)=>{
+        if(result){
+            const { numeroReservation, idBoutique, id_user, dateDuJour} = result[0]
+            const { nombreCouverts, horaire, dateReservation} = req.body
+            connection.query(reservation.updateReservationByNumeroReservation,[dateDuJour,nombreCouverts, dateReservation, horaire,numeroReservation, idBoutique, id_user, numeroReservation],(error,result)=>{
+                if(result){
+                    res.status(201).json({result: result,message: httpRequestMessages.successUpdateReservation})  
+                }else{
+                    res.status(404).json({error : error, message: httpRequestMessages.errorUpdateReservation})
+                }
+            })
+        }else{
+            res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
+        }
+    })
+}
+

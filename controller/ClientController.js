@@ -152,10 +152,11 @@ exports.getAllClients = (req, res) =>{
 }
 
 exports.getClientByCritere = (req, res) =>{
-    const id_user = req.params.id_user
-    const numero_client = req.params.numero_client
-    const phone = req.params.phone
-    const nom = req.params.nom
+    // const id_user = req.params.id_user
+    // const numero_client = req.params.numero_client
+    // const phone = req.params.phone
+    // const nom = req.params.nom
+    const { id_user, numero_client, phone, nom} = req.params
     if (id_user) {
         connection.query(getClientById,[id_user , numero_client],(error, result, fields)=>{
             if (result[0] != undefined) {

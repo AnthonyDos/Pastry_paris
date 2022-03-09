@@ -1,3 +1,8 @@
+//création
+exports.createReservation = "INSERT INTO reservation SET dateDuJour= CURDATE(), numeroReservation= ? , id_user= ?, idBoutique= ?, horaire= ?, dateReservation= ?, nombreCouverts= ?"
+
+
+//récupération
 exports.getAllReservation = "SELECT * FROM reservation"
 
 exports.getAllReservationByDate ="SELECT *, DATE_FORMAT(reservation.dateReservation, '%d/%m/%Y') FROM reservation WHERE dateReservation= ?  "
@@ -18,6 +23,10 @@ exports.getAllReservationByIdBoutique = "SELECT * FROM reservation INNER JOIN bo
 
 exports.getAllReservationByIdBoutiqueDateReservation = "SELECT * FROM reservation INNER JOIN boutiques ON reservation.idBoutique = boutiques.idBoutique WHERE boutiques.idBoutique= ? AND reservation.DateReservation= ?"
 
-exports.createReservation = "INSERT INTO reservation SET numeroReservation= ? , id_user= ?, idBoutique= ?, horaire= ?, dateReservation= ?, nombreCouverts= ?"
+//modification
+exports.updateReservationByNumeroReservation = "UPDATE reservation SET dateDuJour= ?, reservation.nombreCouverts= ?, reservation.dateReservation= ?, reservation.horaire= ?, reservation.numeroReservation= ?, reservation.idBoutique= ?, reservation.id_user= ? WHERE reservation.numeroReservation= ? "
+
+
+
 //DATE_FORMAT (location.dateLocation, '%d/%m/%Y') AS dateLocation
 

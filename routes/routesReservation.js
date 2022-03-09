@@ -14,8 +14,8 @@ router.get('/getReservation/numeroClient/:numero_client',auth, reservation.getRe
 router.get('/getReservation/numeroclient/:numero_client/dateReservation/:dateReservation',auth, reservation.getReservationByCriteres);
 router.get('/getReservation/telephone/:phone',auth, reservation.getReservationByCriteres);
 router.get('/getReservation/boutique/:idBoutique/dateReservation/:dateReservation',auth, reservation.getReservationByCriteres);
-router.put('/putCommande/idClient/:idClient');
-router.put('/putCommande/numeroReservation/:numeroReservation');
+//router.put('/putCommande/numeroClient/:numero_client',auth, reservation.updateReservationByCritere);
+router.put('/putReservation/numeroReservation/:numeroReservation',auth, reservation.updateReservationByCritere);
 router.delete('/deleteCommande/idClient/:idClient');
 router.delete('/deleteCommande/idReservation/:idReservation');
 router.delete('/deleteCommande/numeroReservation/:numeroReservation');
