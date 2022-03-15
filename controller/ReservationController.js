@@ -7,7 +7,7 @@ exports.getReservationByCriteres = (req, res) =>{
     if (dateReservation && numero_client === undefined && idBoutique === undefined) {  
         connection.query(reservation.getAllReservationByDate,[dateReservation],(error,result, fields)=>{
             if(error){
-                res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
+                res.status(400).json({error: error, message: httpRequestMessages.errorGetAllReservation})
             }else{
                 res.status(201).json({ result: result, message: httpRequestMessages.successGetAllReservation})
             }
@@ -18,7 +18,7 @@ exports.getReservationByCriteres = (req, res) =>{
             if(result.length > 0){
                 res.status(201).json({ result: result[0], message: httpRequestMessages.successGetAllReservation})
             }else{
-                res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
+                res.status(400).json({error: error, message: httpRequestMessages.errorGetAllReservation})
             }
         })
     }else if(numeroReservation){
@@ -26,7 +26,7 @@ exports.getReservationByCriteres = (req, res) =>{
             if(result[0] != undefined || result < 0){
                 res.status(201).json({ result: result[0], message: httpRequestMessages.successGetAllReservation})
             }else{
-                res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
+                res.status(400).json({error: error, message: httpRequestMessages.errorGetAllReservation})
             }
         })
     }else if(ville){
@@ -35,7 +35,7 @@ exports.getReservationByCriteres = (req, res) =>{
             if(result.length > 0){ 
                 res.status(201).json({ result: result, message: httpRequestMessages.successGetAllReservation})
             }else{
-                res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
+                res.status(400).json({error: error, message: httpRequestMessages.errorGetAllReservation})
             }
         })
     }else if(numero_client && dateReservation === undefined){ 
@@ -43,16 +43,16 @@ exports.getReservationByCriteres = (req, res) =>{
             if(result.length > 0 ){
                 res.status(201).json({ result: result, message: httpRequestMessages.successGetAllReservation})
             }else{
-                res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
+                res.status(400).json({error: error, message: httpRequestMessages.errorGetAllReservation})
             }
         })
     }else if(numero_client && dateReservation ){
         connection.query(reservation.getReservationByNumeroClientDateReservation,[numero_client, dateReservation],(error,result, fields)=>{
             if(error){
-                res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
+                res.status(400).json({error: error, message: httpRequestMessages.errorGetAllReservation})
             }else{
                 if(result.length < 1){
-                    res.status(404).json({error: error, message: httpRequestMessages.errorNoReservationClient})
+                    res.status(400).json({error: error, message: httpRequestMessages.errorNoReservationClient})
                 }else{
                     res.status(201).json({ result: result, message: httpRequestMessages.successGetAllReservation})
                 }
@@ -72,9 +72,9 @@ exports.getReservationByCriteres = (req, res) =>{
             if(result.length > 0){
                 res.status(201).json({result : result, message: httpRequestMessages.successGetAllReservation})
             }else if(result.length < 1){
-                res.status(404).json({error : error , message: httpRequestMessages.errorGetAllReservationAucune})
+                res.status(400).json({error : error , message: httpRequestMessages.errorGetAllReservationAucune})
             }else{  
-                res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
+                res.status(400).json({error: error, message: httpRequestMessages.errorGetAllReservation})
             }
         })    
     }else if(idBoutique && dateReservation === undefined){
@@ -82,7 +82,7 @@ exports.getReservationByCriteres = (req, res) =>{
             if(result){
                 res.status(201).json({result: result, message: httpRequestMessages.successGetAllReservation})
             }else{
-                res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
+                res.status(400).json({error: error, message: httpRequestMessages.errorGetAllReservation})
             }
         })
     }else if(phone){
@@ -90,7 +90,7 @@ exports.getReservationByCriteres = (req, res) =>{
             if(result){
                 res.status(201).json({result: result, message: httpRequestMessages.successGetAllReservation})
             }else{
-                res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
+                res.status(400).json({error: error, message: httpRequestMessages.errorGetAllReservation})
             }
         })
     }else if(idBoutique && dateReservation){
@@ -98,11 +98,11 @@ exports.getReservationByCriteres = (req, res) =>{
             if(result.length > 0){
                 res.status(201).json({result: result, message: httpRequestMessages.successGetAllReservation})
             }else{
-                res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
+                res.status(400).json({error: error, message: httpRequestMessages.errorGetAllReservation})
             }
         })
     }else{
-        res.status(404).json({message: httpRequestMessages.errorGetAllReservation})
+        res.status(400).json({message: httpRequestMessages.errorGetAllReservation})
     }
 }
 
@@ -110,7 +110,7 @@ exports.createReservation = (req,res)=>{
     const {numeroReservation, id_user, idBoutique, horaire, dateReservation, nombreCouverts} = req.body
     connection.query(reservation.createReservation,[numeroReservation,id_user, idBoutique, horaire,dateReservation, nombreCouverts],(error,result)=>{
         if(error){
-            res.status(404).json({error : error, message: httpRequestMessages.errorCreateReservation})
+            res.status(400).json({error : error, message: httpRequestMessages.errorCreateReservation})
         }else{
            res.status(201).json({result: result,message: httpRequestMessages.successCreateReservation})
         }
@@ -127,11 +127,11 @@ exports.updateReservationByCritere = (req, res) =>{
                 if(result){
                     res.status(201).json({result: result,message: httpRequestMessages.successUpdateReservation})  
                 }else{
-                    res.status(404).json({error : error, message: httpRequestMessages.errorUpdateReservation})
+                    res.status(400).json({error : error, message: httpRequestMessages.errorUpdateReservation})
                 }
             })
         }else{
-            res.status(404).json({error: error, message: httpRequestMessages.errorGetAllReservation})
+            res.status(400).json({error: error, message: httpRequestMessages.errorGetAllReservation})
         }
     })
 }
@@ -141,7 +141,7 @@ exports.deleteReservation = (req, res) =>{
     if(id_reservation){
         connection.query(reservation.deleteReservationByIdReservation,[id_reservation],(error,result)=>{
             if(result.affectedRows === 0){        
-                res.status(404).json({error : error, message: httpRequestMessages.errorDeleteReservation})
+                res.status(400).json({error : error, message: httpRequestMessages.errorDeleteReservation})
             }else{
                 res.status(201).json({ message: httpRequestMessages.successDeleteReservation})
             }
@@ -149,13 +149,13 @@ exports.deleteReservation = (req, res) =>{
     }else if(numeroReservation){
         connection.query(reservation.deleteReservationByNumeroReservation,[numeroReservation],(error,result)=>{
             if(result.affectedRows === 0){      
-                res.status(404).json({error : error, message: httpRequestMessages.errorDeleteReservation})
+                res.status(400).json({error : error, message: httpRequestMessages.errorDeleteReservation})
             }else{
                 res.status(201).json({ message: httpRequestMessages.successDeleteReservation})
             }
         })  
     }else{
-        res.status(404).json({error : error, message: httpRequestMessages.errorDeleteReservation})
+        res.status(400).json({error : error, message: httpRequestMessages.errorDeleteReservation})
     }
 }
 

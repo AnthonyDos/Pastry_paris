@@ -30,20 +30,19 @@ exports.getCommandeByCritere = (req,res)=>{
                 res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByCritere})
             }else{
                 if(result < 1){
-                    res.status(404).json({error: error, message: httpRequestMessagesCommande.errorGetCommandById})
+                    res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandById})
                 }else{
                     res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandById})
                 }
             }
         })
     }else if(ville && idBoutique === undefined){
-        console.log(ville)
         connection.query(commande.getCommandeByVille,[ville],(error,result)=>{
             if(error){
                 res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByCritere})
             }else{
                 if(result.length < 1){
-                    res.status(404).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByVille})
+                    res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByVille})
                 }else{
                     res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByVille})
                 }
@@ -55,7 +54,7 @@ exports.getCommandeByCritere = (req,res)=>{
                 res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByCritere})
             }else{
                 if(result.length < 1){
-                    res.status(404).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByVilleAndIdBoutique})
+                    res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByVilleAndIdBoutique})
                 }else{
                     res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByVilleAndIdBoutique})
                 }
@@ -67,10 +66,8 @@ exports.getCommandeByCritere = (req,res)=>{
                 res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByCritere})
             }else{
                 if(result < 1){
-                    console.log(result.length)
-                    res.status(404).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByIdBoutique})
+                    res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByIdBoutique})
                 }else{
-                    console.log(result[0])
                     res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByIdBoutique})
                 }
             }
@@ -81,13 +78,69 @@ exports.getCommandeByCritere = (req,res)=>{
                 res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByCritere})
             }else{
                 if(result < 1){
-                    console.log(result.length)
-                    res.status(404).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByIdBoutique})
+                    res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByIdBoutiqueAndNumeroCommande})
                 }else{
-                    console.log(result[0])
-                    res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByIdBoutique})
+                    res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByIdBoutiqueAndNumeroCommande})
                 }
             }
         })
+    }else if(numero_client){
+        connection.query(commande.getCommandeByNumeroClient,[numero_client],(error,result)=>{
+            if(error){
+                res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByCritere})
+            }else{
+                if(result < 1){
+                    res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByNumeroClient})
+                }else{
+                    res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByNumeroClient})
+                }
+            }
+        })
+    }else if(numeroCommande){
+        connection.query(commande.getCommandeByNumeroCommande,[numeroCommande],(error,result)=>{
+            if(error){
+                res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByCritere})
+            }else{
+                if(result < 1){
+                    res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByNumeroCommande})
+                }else{
+                    res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByNumeroCommande})
+                }
+            }
+        })
+    }else if(phone){
+        connection.query(commande.getCommandeByPhone,[phone],(error,result)=>{
+            if(error){
+                res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByCritere})
+            }else{
+                if(result < 1){
+                    res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByTelephone})
+                }else{
+                    res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByTelephone})
+                }
+            }
+        })
+    }else if(dateCommande){
+        connection.query(commande.getCommandeByDateCommande,[dateCommande],(error,result)=>{
+            if(error){
+                res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByCritere})
+            }else{
+                if(result < 1){
+                    res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByDateCommande})
+                }else{
+                    res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByDateCommande})
+                }
+            }
+        })
+    }else if(id_commande === undefined && ville === undefined && idBoutique === undefined && numero_client === undefined && numeroCommande === undefined && phone === undefined && dateCommande === undefined){
+        connection.query(commande.getAllCommandes,(error,result)=>{
+            if(result < 1){
+                res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetAllCommand})
+            }else{
+                res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetAllCommand})
+            }
+        })
+    }else{
+        res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByCritere})
     }
 }

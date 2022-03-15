@@ -13,3 +13,11 @@ exports.getCommandeByVilleAndIdBoutique = "SELECT * FROM commandes INNER JOIN bo
 exports.getCommandeByIdBoutique = "SELECT * FROM commandes INNER JOIN boutiques ON commandes.idBoutique = boutiques.idBoutique WHERE boutiques.idBoutique= ?"
 
 exports.getCommandeByIdBoutiqueAndNumeroCommande = "SELECT * FROM commandes INNER JOIN boutiques ON commandes.idBoutique = boutiques.idBoutique WHERE boutiques.idBoutique= ? AND commandes.numeroCommande=  ?"
+
+exports.getCommandeByNumeroClient = "SELECT * FROM commandes INNER JOIN users ON commandes.id_user = users.id_user WHERE users.numero_client= ?"
+
+exports.getCommandeByNumeroCommande = "SELECT * FROM commandes WHERE numeroCommande= ?"
+
+exports.getCommandeByPhone = "SELECT * FROM commandes INNER JOIN users ON commandes.id_user = users.id_user WHERE users.phone= ?"
+
+exports.getCommandeByDateCommande = "SELECT * FROM commandes WHERE dateCommande= ?"

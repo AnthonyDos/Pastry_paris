@@ -133,7 +133,7 @@ exports.getAllClients = (req, res) =>{
             if (results != undefined) {
                 res.status(201).json({results :results, message : httpRequestMessages.successGetAllClient})
             }else{
-                res.status(404).json({error:error,message: httpRequestMessages.errorGetAllClient})
+                res.status(400).json({error:error,message: httpRequestMessages.errorGetAllClient})
             }
         })
     }else if(codePostal != undefined){
@@ -141,7 +141,7 @@ exports.getAllClients = (req, res) =>{
             if (results[0].length === req.body.codePostal) {
                 res.status(201).json({results :results, message : httpRequestMessages.successGetAllClientByCodePostal})
             }else{
-                res.status(404).json({error:error,message: httpRequestMessages.errorGetAllClient})
+                res.status(400).json({error:error,message: httpRequestMessages.errorGetAllClient})
             }
         })
     }else{
@@ -156,7 +156,7 @@ exports.getClientByCritere = (req, res) =>{
             if (result[0] != undefined) {
                 res.status(201).json({result :result[0], message : httpRequestMessages.successGetClientById})
             }else{                 
-                res.status(404).json({error:error,message: httpRequestMessages.errorGetClientById})
+                res.status(400).json({error:error,message: httpRequestMessages.errorGetClientById})
             }     
         })
     }else if(numero_client){
@@ -164,7 +164,7 @@ exports.getClientByCritere = (req, res) =>{
             if (result[0] != undefined) {
                 res.status(201).json({result :result[0], message : httpRequestMessages.successGetClientByNumeroClient})
             }else{                 
-                res.status(404).json({error:error,message: httpRequestMessages.errorAucunClientByNumeroClient})
+                res.status(400).json({error:error,message: httpRequestMessages.errorAucunClientByNumeroClient})
             }     
         })
     }else if(phone){
@@ -172,20 +172,20 @@ exports.getClientByCritere = (req, res) =>{
             if (result != undefined) {
                 res.status(201).json({result :result, message : httpRequestMessages.successGetClientByNumeroPhone})
             }else{                 
-                res.status(404).json({error:error,message: httpRequestMessages.errorAucunClientByNumeroTelephone})
+                res.status(400).json({error:error,message: httpRequestMessages.errorAucunClientByNumeroTelephone})
             }     
         })
     }else if(nom){
         if(nom.length < 3){
-            res.status(404).json({ message : httpRequestMessages.errorRechercheByNomCaractereMin3})
+            res.status(400).json({ message : httpRequestMessages.errorRechercheByNomCaractereMin3})
         }else{
             connection.query(`SELECT * FROM users WHERE  nom LIKE '${nom}%' `,(error, result, fields)=>{
                 if (result.length > 0) {
                     res.status(201).json({result :result, message : httpRequestMessages.successGetClientByNom})
                 }else if(result.length === null || result.length < 0){                 
-                    res.status(404).json({error:error,message: httpRequestMessages.errorAucunClientByNom})
+                    res.status(400).json({error:error,message: httpRequestMessages.errorAucunClientByNom})
                 }else{                 
-                    res.status(404).json({error:error,message: httpRequestMessages.errorAucunClient})
+                    res.status(400).json({error:error,message: httpRequestMessages.errorAucunClient})
                 }        
             })
         }
@@ -203,7 +203,7 @@ exports.updateClient = async (req, res) =>{
         const recuperationEmail = result[0].email
         console.log(recuperationEmail)
         if(error){
-            res.status(404).json({error: error, message: httpRequestMessages.errorClientEchecConnexion})
+            res.status(400).json({error: error, message: httpRequestMessages.errorClientEchecConnexion})
         }else{
             if(password === null || password === ""){  
                 connection.query(updateClient,
@@ -222,7 +222,7 @@ exports.updateClient = async (req, res) =>{
                     ],(error, result) =>{
                     console.log(req.params.password)
                     if(error){
-                        res.status(404).json({error: error, message: httpRequestMessages.errorUpdateClient})
+                        res.status(400).json({error: error, message: httpRequestMessages.errorUpdateClient})
                     }else{
                         res.status(201).json({result: result, message: httpRequestMessages.successModification})
                     }
@@ -244,7 +244,7 @@ exports.updateClient = async (req, res) =>{
                     ],(error, result) =>{
                     console.log(req.params.password)
                     if(error){
-                        res.status(404).json({error: error, message: httpRequestMessages.errorUpdateClient})
+                        res.status(400).json({error: error, message: httpRequestMessages.errorUpdateClient})
                     }else{
                         res.status(201).json({result: result, message: httpRequestMessages.successModification})
                     }
@@ -253,7 +253,7 @@ exports.updateClient = async (req, res) =>{
                 if(password.match(REGEX_PASSWORD)){
                     res.status(201).json        
                 }else{ 
-                    return res.status(404).json({message : httpRequestMessages.errorPasswordNoRespectRegex});
+                    return res.status(400).json({message : httpRequestMessages.errorPasswordNoRespectRegex});
                 };
                 connection.query(updateClient,
                     [
@@ -270,7 +270,7 @@ exports.updateClient = async (req, res) =>{
                         req.params.id_user
                     ],(error, result) =>{
                     if(error){
-                        res.status(404).json({error: error, message: httpRequestMessages.errorUpdateClient})
+                        res.status(400).json({error: error, message: httpRequestMessages.errorUpdateClient})
     
                     }else{
                         let comparePassword = bcrypt.hash(req.body.password, 10 )  
@@ -283,7 +283,7 @@ exports.updateClient = async (req, res) =>{
                                     { expiresIn: '12h' })
                             }) 
                         }else{
-                            res.status(404).json({error: error, message: httpRequestMessages.errorClientEmailPasswordNoCorrespond})
+                            res.status(400).json({error: error, message: httpRequestMessages.errorClientEmailPasswordNoCorrespond})
                         } 
                         res.status(201).json({result: result, message: httpRequestMessages.successModification})
                     }
@@ -301,7 +301,7 @@ exports.deleteClient = (req,res) =>{
             if(result[0] != undefined){
                 connection.query(deleteClient,[req.params.id_user],(error,result)=>{
                     if(error){
-                        res.status(404).json({error: error, message : httpRequestMessages.errorDeleteClient})
+                        res.status(400).json({error: error, message : httpRequestMessages.errorDeleteClient})
                     }else{
                         res.status(201).json({success : true, message: httpRequestMessages.successDeleteClient})
                     }
@@ -325,7 +325,7 @@ exports.updateClientPassword = async (req, res) =>{
                 connection.query(UpdatePassword,[recuperationPassword.password,req.params.id_user],(error, result) =>{
                     console.log(req.params.password)
                     if(error){
-                        res.status(404).json({error: error, message: httpRequestMessages.errorUpdatePasswordClient})
+                        res.status(400).json({error: error, message: httpRequestMessages.errorUpdatePasswordClient})
                     }else{
                         res.status(201).json({result: result, message: httpRequestMessages.successUpdatePassword})
                     }
@@ -333,7 +333,7 @@ exports.updateClientPassword = async (req, res) =>{
             }else{
                 connection.query(UpdatePassword,[encryptedPassword, req.params.id_user],(error, result) =>{
                     if(error){
-                        res.status(404).json({error: error, message: httpRequestMessages.errorUpdatePasswordClient})
+                        res.status(400).json({error: error, message: httpRequestMessages.errorUpdatePasswordClient})
                     }else{
                         res.status(201).json({result: result, message: httpRequestMessages.successUpdatePassword})
                     }
