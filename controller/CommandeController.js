@@ -13,17 +13,43 @@ exports.createCommande= (req,res)=>{
     })
 }
 
-exports.getCommandeById = (req,res)=>{
-    const id_commande = req.params
-    connection.query(commande.getCommandeById,[id_commande],(error,result)=>{
-        if(error){
-            res.status(404).json({error: error, message: httpRequestMessagesCommande.errorGetCommandById})
-        }else{
-            if(result < 1){
-                res.status(404).json({error: error, message: httpRequestMessagesCommande.errorGetCommandById})
+exports.getCommandeByCritere = (req,res)=>{
+    const {
+        id_commande,
+        ville,
+        idBoutique, 
+        numero_client,
+        numeroCommande,
+        phone,
+        dateCommande
+    } = req.params
+    
+    if (id_commande) {
+        connection.query(commande.getCommandeById,[id_commande],(error,result)=>{
+            if(error){
+                res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByCritere})
             }else{
-                res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandById})
+                if(result < 1){
+                    res.status(404).json({error: error, message: httpRequestMessagesCommande.errorGetCommandById})
+                }else{
+                    res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandById})
+                }
             }
-        }
-    })
+        })
+    }else if(ville){
+        console.log(ville)
+        connection.query(commande.getCommandeByVille,[ville],(error,result)=>{
+            if(error){
+                res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByCritere})
+            }else{
+                if(result.length < 1){
+                    res.status(404).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByVille})
+                }else{
+                    res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByVille})
+                }
+            }
+        })
+    }else{
+
+    }
 }

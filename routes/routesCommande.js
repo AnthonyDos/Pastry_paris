@@ -5,18 +5,19 @@ const auth = require('../middleware/auth');
 
 router.post('/createCommande', auth, commande.createCommande);
 router.get('/getAllCommande');
-router.get('/getAllCommande/:idBoutique');
-router.get('/getAllCommande/:ville/:idBoutique');
-router.get('/getAllCommande/:idBoutique');
-router.get('/getCommande/:idBoutique/:numeroCommande');
-router.get('/getCommande/idCommande/:id_commande', auth, commande.getCommandeById);
-router.get('/getCommande/:numeroClient');
-router.get('/getCommande/:numeroCommande');
-router.get('/getCommande/:telephone');
-router.get('/getCommande/:date'); 
-router.put('/putCommande/:idCommande');
-router.put('/putCommande/:numeroCommande');
-router.delete('/deleteCommande/:id');
+router.get('/getAllCommande/boutique/:idBoutique');
+router.get('/getAllCommande/ville/:ville/boutique/:idBoutique');
+router.get('/getAllCommande/ville/:ville', auth, commande.getCommandeByCritere);
+router.get('/getAllCommande/boutique/:idBoutique');
+router.get('/getCommande/boutique/:idBoutique/numero_commande/:numeroCommande');
+router.get('/getCommande/idCommande/:id_commande', auth, commande.getCommandeByCritere);
+router.get('/getCommande/numero_client/:numeroClient');
+router.get('/getCommande/numero_commande/:numeroCommande');
+router.get('/getCommande/telephone/:telephone');
+router.get('/getCommande/date/:date'); 
+router.put('/putCommande/id_commande/:idCommande');
+router.put('/putCommande/numero_commande/:numeroCommande');
+router.delete('/deleteCommande/:idCommande');
 
 //gerer la route si un client ne souhaite pas avoir de compte il faut pouvoir lui sortir une facture
 module.exports = router;
