@@ -3,7 +3,7 @@ const router = express.Router();
 const reservation = require('../controller/ReservationController');
 const auth = require('../middleware/auth');
 
-router.post('/createReservation', reservation.createReservation);
+router.post('/createReservation',auth, reservation.createReservation);
 router.get('/getAllReservation',auth, reservation.getReservationByCriteres );
 router.get('/getAllReservation/boutique/idBoutique/:idBoutique',auth, reservation.getReservationByCriteres);
 router.get('/getAllReservation/date-reservation/:dateReservation', auth, reservation.getReservationByCriteres);

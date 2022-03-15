@@ -16,7 +16,7 @@ app.use(cors());
 //routes
 const clientRoutes = require('./routes/routesClient');
 const reservationRoutes = require('./routes/routesReservation');
-
+const commandeRoutes = require('./routes/routesCommande');
 //en-tête
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*'); 
@@ -31,6 +31,7 @@ app.use(helmet())
 //app.use('/images', express.static(path.join(__dirname +'/images')))
 app.use(baseUrl.clientUrl, clientRoutes);
 app.use(baseUrl.reservationUrl, reservationRoutes);
+app.use(baseUrl.commandeUrl, commandeRoutes);
 // app.use('/api/cars', carsRoutes);
 // app.use('/api/admin',routeAdmin);
 // app.use('/api/location', routeLocation);

@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const commande = require('../controller/CommandeController');
+const auth = require('../middleware/auth');
 
-router.post('/createCommande');
+router.post('/createCommande', auth, commande.createCommande);
 router.get('/getAllCommande');
 router.get('/getAllCommande/:idBoutique');
 router.get('/getAllCommande/:ville/:idBoutique');
