@@ -9,6 +9,7 @@ router.get('/getAllCommande/:idBoutique');
 router.get('/getAllCommande/:ville/:idBoutique');
 router.get('/getAllCommande/:idBoutique');
 router.get('/getCommande/:idBoutique/:numeroCommande');
+router.get('/getCommande/idCommande/:id_commande', auth, commande.getCommandeById);
 router.get('/getCommande/:numeroClient');
 router.get('/getCommande/:numeroCommande');
 router.get('/getCommande/:telephone');

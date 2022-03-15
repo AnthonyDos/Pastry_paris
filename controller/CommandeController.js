@@ -14,5 +14,16 @@ exports.createCommande= (req,res)=>{
 }
 
 exports.getCommandeById = (req,res)=>{
-
+    const id_commande = req.params
+    connection.query(commande.getCommandeById,[id_commande],(error,result)=>{
+        if(error){
+            res.status(404).json({error: error, message: httpRequestMessagesCommande.errorGetCommandById})
+        }else{
+            if(result < 1){
+                res.status(404).json({error: error, message: httpRequestMessagesCommande.errorGetCommandById})
+            }else{
+                res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandById})
+            }
+        }
+    })
 }
