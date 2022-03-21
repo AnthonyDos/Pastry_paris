@@ -158,3 +158,15 @@ exports.updateCommandeByCritere = (req,res) =>{
         })
     }
 }
+
+
+exports.deleteCommandeById = (req, res)=>{
+    const id_commande = req.params.id_commande
+    connection.query(commande.deleteCommande,[id_commande],(error,result) =>{
+        if(result.affectedRows === 0 ){
+            res.status(400).json({error: error, message: httpRequestMessagesCommande.errorDeleteCommande})
+        }else{
+            res.status(201).json({message: httpRequestMessagesCommande.successDeleteCommande})
+        }
+    })
+}

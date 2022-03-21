@@ -16,7 +16,7 @@ router.get('/getCommande/telephone/:phone', auth, commande.getCommandeByCritere)
 router.get('/getCommande/date/:dateCommande', auth, commande.getCommandeByCritere); 
 router.put('/putCommande/id_commande/:id_commande', auth, commande.updateCommandeByCritere);
 router.put('/putCommande/numero_commande/:numeroCommande', auth, commande.updateCommandeByCritere);
-router.delete('/deleteCommande/:id_commande');
+router.delete('/deleteCommande/:id_commande',auth, commande.deleteCommandeById);
 
 //gerer la route si un client ne souhaite pas avoir de compte il faut pouvoir lui sortir une facture
 module.exports = router;

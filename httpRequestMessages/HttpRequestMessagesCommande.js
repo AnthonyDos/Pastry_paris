@@ -14,6 +14,8 @@ exports.successGetCommandByDateCommande = "Commandes récupéré par la date de 
 
 exports.successUpdateCommandeByCriteres = " Commande modifié avec succés !"
 
+exports.successDeleteCommande = "Suppression de la commande avec succés !"
+
 //error
 exports.errorCreateCommande = "La création de commande à échouée!"
 
@@ -31,3 +33,5 @@ exports.errorGetCommandByDateCommande = "Erreur lors de la récupération des co
 
 exports.errorUpdateCommandeByCritere = "Erreur tous les champs obligatoire ne sont pas remplis !"
 exports.errorUpdateCommande = "Erreur lors de la modification de la commande !"
+
+exports.errorDeleteCommande = "Aucune commande avec ce numéro !"
