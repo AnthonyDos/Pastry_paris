@@ -1,5 +1,6 @@
 //success
 exports.successCreateCommande = "La commande est créé avec succés !"
+
 exports.successGetAllCommand = "Récupération des commandes!"
 exports.successGetCommandById = "La commande récupéré par id!"
 exports.successGetCommandByVille = "La commande récupéré par la ville!"
@@ -11,9 +12,11 @@ exports.successGetCommandByNumeroCommande = "La commande récupéré par le num�
 exports.successGetCommandByTelephone = "Commandes récupéré par le numéro de téléphone!"
 exports.successGetCommandByDateCommande = "Commandes récupéré par la date de commande!"
 
+exports.successUpdateCommandeByCriteres = " Commande modifié avec succés !"
 
 //error
 exports.errorCreateCommande = "La création de commande à échouée!"
+
 exports.errorGetAllCommand = "Erreur lors de la récupération des commandes!"
 exports.errorGetCommandByCritere = "Erreur lors de la récupération de commande par critère !"
 exports.errorGetCommandById = "Erreur lors de la récupération de commande par id!"
@@ -25,3 +28,6 @@ exports.errorGetCommandByNumeroClient = "Erreur lors de la récupération de com
 exports.errorGetCommandByNumeroCommande = "Erreur lors de la récupération de commande par le numéro de commande!"
 exports.errorGetCommandByTelephone = "Erreur lors de la récupération des commandes par le numéro de téléphone!"
 exports.errorGetCommandByDateCommande = "Erreur lors de la récupération des commandes par la date de commande!"
+
+exports.errorUpdateCommandeByCritere = "Erreur tous les champs obligatoire ne sont pas remplis !"
+exports.errorUpdateCommande = "Erreur lors de la modification de la commande !"

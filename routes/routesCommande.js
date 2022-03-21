@@ -14,8 +14,8 @@ router.get('/getCommande/numero_client/:numero_client', auth, commande.getComman
 router.get('/getCommande/numero_commande/:numeroCommande', auth, commande.getCommandeByCritere);
 router.get('/getCommande/telephone/:phone', auth, commande.getCommandeByCritere);
 router.get('/getCommande/date/:dateCommande', auth, commande.getCommandeByCritere); 
-router.put('/putCommande/id_commande/:id_commande', auth, commande.getCommandeByCritere);
-router.put('/putCommande/numero_commande/:numeroCommande');
+router.put('/putCommande/id_commande/:id_commande', auth, commande.updateCommandeByCritere);
+router.put('/putCommande/numero_commande/:numeroCommande', auth, commande.updateCommandeByCritere);
 router.delete('/deleteCommande/:id_commande');
 
 //gerer la route si un client ne souhaite pas avoir de compte il faut pouvoir lui sortir une facture
