@@ -72,3 +72,14 @@ exports.updateBoutique = (req, res)=>{
         }
     })
 }
+
+exports.deleteBoutiqueById = (req, res)=>{
+    const {idBoutique} = req.params
+    connection.query(boutique.deleteBoutiqueById,[idBoutique],(error,result)=>{
+        if(result.affectedRows === 0 ){
+            res.status(400).json({error: error, message: httpRequestMessagesBoutique.errorDeleteBoutiqueById})
+        }else{
+            res.status(201).json({message: httpRequestMessagesBoutique.successDeleteBoutiqueById})
+        }
+    })
+}

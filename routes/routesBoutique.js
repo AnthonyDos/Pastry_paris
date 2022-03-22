@@ -9,6 +9,6 @@ router.get('/getBoutique/boutique/:idBoutique', auth, boutique.getBoutiqueByCrit
 router.get('/getBoutique/boutique/ville/:ville', auth, boutique.getBoutiqueByCriteres); //get all boutiques par ville
 router.get('/getBoutique/boutique/pays/:pays', auth, boutique.getBoutiqueByCriteres); //get all boutiques par pays
 router.put('/putBoutique/boutique/:idBoutique', auth, boutique.updateBoutique);//modification de la boutique par id
-router.delete('/deleteBoutique/:idBoutique');//suppression par id
+router.delete('/deleteBoutique/boutique/:idBoutique', auth, boutique.deleteBoutiqueById);//suppression par id
 
 module.exports = router;

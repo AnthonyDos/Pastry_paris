@@ -10,3 +10,6 @@ exports.getBoutiqueByPays = "SELECT * FROM boutiques WHERE pays= ?"
 
 // update boutique
 exports.updateBoutiqueByIdBoutique = "UPDATE boutiques SET nomBoutique= ?, adresse= ?, codePostal= ?, ville= ?, pays= ?, phone= ?, horaire= ? WHERE idBoutique= ?"
+
+//delete boutique
+exports.deleteBoutiqueById = "DELETE FROM boutiques WHERE idBoutique= ?"
