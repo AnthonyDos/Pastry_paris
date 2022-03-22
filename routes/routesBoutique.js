@@ -8,9 +8,7 @@ router.get('/getBoutique/all-boutiques', auth, boutique.getAllBoutiques); //get 
 router.get('/getBoutique/boutique/:idBoutique', auth, boutique.getBoutiqueByCriteres); //get boutiques par id
 router.get('/getBoutique/boutique/ville/:ville', auth, boutique.getBoutiqueByCriteres); //get all boutiques par ville
 router.get('/getBoutique/boutique/pays/:pays', auth, boutique.getBoutiqueByCriteres); //get all boutiques par pays
-router.get('/getBoutique/boutique/allReservation/:idBoutique'); // get All reservation de la boutique
-router.get('/getBoutique/boutique/allPatisseries/:idBoutique'); //get All pâtisseries de la boutique
-router.put('/putBoutique/:idBoutique');//modification de la boutique par id
+router.put('/putBoutique/boutique/:idBoutique', auth, boutique.updateBoutique);//modification de la boutique par id
 router.delete('/deleteBoutique/:idBoutique');//suppression par id
 
 module.exports = router;
