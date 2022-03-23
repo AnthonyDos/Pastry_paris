@@ -5,9 +5,9 @@ const auth = require('../middleware/auth');
 
 router.post('/createAdmin', admin.createAdmin);
 router.post('/connexion', admin.connectAdmin);
-router.get("/admin/name/:id_admin",auth)
-router.get("/admin/getAllAdmin", auth)
-router.put("/updateAdmin/:id_admin", auth),
-router.delete("/deleteAdmin/:id_admin", auth)
+router.get("/id_admin/:id_admin",auth, admin.getAdminById);
+router.get("/getAllAdmin", auth, admin.getAllAdmin);
+router.put("/updateAdmin/:id_admin", auth);
+router.delete("/deleteAdmin/:id_admin", auth);
 
 module.exports = router;
