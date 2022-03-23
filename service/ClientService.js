@@ -13,6 +13,8 @@ exports.getClientByEmail = 'SELECT * FROM users WHERE  email = ?'
 
 exports.getAllClientByCodePostal = 'SELECT * FROM users WHERE codePostal= ?'
 
+
+//create client
 exports.createClient = 'INSERT INTO users SET nom= ?, prenom= ?, email= ?, password= ?, phone= ?, adresse= ?, ville= ?, codePostal= ?, pays= ?, numero_client= ?'
 
 exports.connectClient = 'SELECT * FROM users WHERE email = ? '

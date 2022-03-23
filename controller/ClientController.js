@@ -3,23 +3,11 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const connection = require('../config/sql/db.config');
 const httpRequestMessages = require('../httpRequestMessages/HttpRequestMessagesUser');
-const {
-    getAllClients, 
-    getClientById, 
-    getClientByNumeroClient, 
-    getClientByPhone, 
-    getClientByEmail, 
-    getAllClientByCodePostal, 
-    createClient, 
-    connectClient, 
-    updateClient,
-    deleteClient,
-    UpdatePassword
-} = require('../service/ClientService');
+const client = require('../service/ClientService');
 const {REGEX_EMAIL, REGEX_PASSWORD } =require('../config/Regex');
 
 exports.createClient = async (req, res) =>{
-    const encryptedPassword =   await  bcrypt.hash(req.body.password, 10);
+    const encryptedPassword = await bcrypt.hash(req.body.password, 10);
     const password = req.body.password
     const password_regex = REGEX_PASSWORD 
     id_user = req.body.id_user
@@ -36,14 +24,14 @@ exports.createClient = async (req, res) =>{
     }
 
     if(req.body.email){
-        connection.query(getClientByEmail, [req.body.email], (err, result) =>{  
+        connection.query(client.getClientByEmail, [req.body.email], (err, result) =>{  
             if (err){   
                 res.status(401).json({err: err})
             }else {        
                 if(result[0] != undefined){
                     res.status(401).json({ err:err , message: httpRequestMessages.errorEmailExiste})
                 }else {               
-                    connection.query(createClient,
+                    connection.query(client.createClient,
                         [
                             req.body.nom,
                             req.body.prenom, 
@@ -100,7 +88,7 @@ exports.connectClient = async (req, res) =>{
     if(!regexEmail.test(req.body.email)){    
         return res.json({ message: httpRequestMessages.errorEmailNoRespectRegex}) 
     }
-    connection.query(connectClient ,[req.body.email], async function(error, results, fields){
+    connection.query(client.connectClient ,[req.body.email], async function(error, results, fields){
         if (error){
             res.status(401).json({error: error ,message: httpRequestMessages.errorClientEchecConnexion})
         }else{
@@ -129,7 +117,7 @@ exports.connectClient = async (req, res) =>{
 exports.getAllClients = (req, res) =>{
     const codePostal = req.params.codePostal
     if(!codePostal){
-        connection.query(getAllClients,(error,results)=>{
+        connection.query(client.getAllClients,(error,results)=>{
             if (results != undefined) {
                 res.status(201).json({results :results, message : httpRequestMessages.successGetAllClient})
             }else{
@@ -137,7 +125,7 @@ exports.getAllClients = (req, res) =>{
             }
         })
     }else if(codePostal != undefined){
-        connection.query(getAllClientByCodePostal,[codePostal],(error,results)=>{
+        connection.query(client.getAllClientByCodePostal,[codePostal],(error,results)=>{
             if (results[0].length === req.body.codePostal) {
                 res.status(201).json({results :results, message : httpRequestMessages.successGetAllClientByCodePostal})
             }else{
@@ -152,7 +140,7 @@ exports.getAllClients = (req, res) =>{
 exports.getClientByCritere = (req, res) =>{
     const { id_user, numero_client, phone, nom} = req.params
     if (id_user) {
-        connection.query(getClientById,[id_user , numero_client],(error, result, fields)=>{
+        connection.query(client.getClientById,[id_user , numero_client],(error, result, fields)=>{
             if (result[0] != undefined) {
                 res.status(201).json({result :result[0], message : httpRequestMessages.successGetClientById})
             }else{                 
@@ -160,7 +148,7 @@ exports.getClientByCritere = (req, res) =>{
             }     
         })
     }else if(numero_client){
-        connection.query(getClientByNumeroClient,[numero_client],(error, result, fields)=>{
+        connection.query(client.getClientByNumeroClient,[numero_client],(error, result, fields)=>{
             if (result[0] != undefined) {
                 res.status(201).json({result :result[0], message : httpRequestMessages.successGetClientByNumeroClient})
             }else{                 
@@ -168,7 +156,7 @@ exports.getClientByCritere = (req, res) =>{
             }     
         })
     }else if(phone){
-        connection.query(getClientByPhone,[phone],(error, result, fields)=>{
+        connection.query(client.getClientByPhone,[phone],(error, result, fields)=>{
             if (result != undefined) {
                 res.status(201).json({result :result, message : httpRequestMessages.successGetClientByNumeroPhone})
             }else{                 
@@ -198,7 +186,7 @@ exports.getClientByCritere = (req, res) =>{
 exports.updateClient = async (req, res) =>{
     const encryptedPassword =   await  bcrypt.hash(req.body.password, 10);
     const {nom, prenom, email, password, phone, adresse, ville,codePostal, pays} =req.body
-    connection.query(getClientById,[req.params.id_user],(error,result)=>{
+    connection.query(client.getClientById,[req.params.id_user],(error,result)=>{
         const recuperationPassword = result[0].password
         const recuperationEmail = result[0].email
         console.log(recuperationEmail)
@@ -206,7 +194,7 @@ exports.updateClient = async (req, res) =>{
             res.status(400).json({error: error, message: httpRequestMessages.errorClientEchecConnexion})
         }else{
             if(password === null || password === ""){  
-                connection.query(updateClient,
+                connection.query(client.updateClient,
                     [
                         nom, 
                         prenom, 
@@ -228,7 +216,7 @@ exports.updateClient = async (req, res) =>{
                     }
                 })
             }else if(email === null || email === ""){
-                connection.query(updateClient,
+                connection.query(client.updateClient,
                     [
                         nom, 
                         prenom, 
@@ -255,7 +243,7 @@ exports.updateClient = async (req, res) =>{
                 }else{ 
                     return res.status(400).json({message : httpRequestMessages.errorPasswordNoRespectRegex});
                 };
-                connection.query(updateClient,
+                connection.query(client.updateClient,
                     [
                         nom, 
                         prenom, 
@@ -294,12 +282,12 @@ exports.updateClient = async (req, res) =>{
 }
 
 exports.deleteClient = (req,res) =>{
-    connection.query(getClientById, [req.params.id_user],(error,result) =>{
+    connection.query(client.getClientById, [req.params.id_user],(error,result) =>{
         if(error){
             res.status(401).json({error: error, message: httpRequestMessages.errorGetClientById})
         }else{
             if(result[0] != undefined){
-                connection.query(deleteClient,[req.params.id_user],(error,result)=>{
+                connection.query(client.deleteClient,[req.params.id_user],(error,result)=>{
                     if(error){
                         res.status(400).json({error: error, message : httpRequestMessages.errorDeleteClient})
                     }else{
@@ -316,13 +304,13 @@ exports.deleteClient = (req,res) =>{
 exports.updateClientPassword = async (req, res) =>{
     const encryptedPassword =   await  bcrypt.hash(req.body.password, 10);
     const { password } =req.body
-    connection.query(getClientById,[req.params.id_user],(error,result)=>{
+    connection.query(client.getClientById,[req.params.id_user],(error,result)=>{
         const recuperationPassword = result[0]
         if(error){
             res.status(401).json({error: error, message: httpRequestMessages.errorClientEchecConnexion})
         }else{
             if(password === null || password === ""){  
-                connection.query(UpdatePassword,[recuperationPassword.password,req.params.id_user],(error, result) =>{
+                connection.query(client.UpdatePassword,[recuperationPassword.password,req.params.id_user],(error, result) =>{
                     console.log(req.params.password)
                     if(error){
                         res.status(400).json({error: error, message: httpRequestMessages.errorUpdatePasswordClient})
@@ -331,7 +319,7 @@ exports.updateClientPassword = async (req, res) =>{
                     }
                 })
             }else{
-                connection.query(UpdatePassword,[encryptedPassword, req.params.id_user],(error, result) =>{
+                connection.query(client.UpdatePassword,[encryptedPassword, req.params.id_user],(error, result) =>{
                     if(error){
                         res.status(400).json({error: error, message: httpRequestMessages.errorUpdatePasswordClient})
                     }else{
