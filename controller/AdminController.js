@@ -55,3 +55,44 @@ exports.createAdmin = async (req,res)=>{
         })
     }
 }
+
+exports.connectAdmin = (req, res)=>{
+    const password = req.body.password
+    const password_regex = REGEX_PASSWORD 
+    id_admin = req.body.id_admin
+
+    if(password.match(password_regex)){
+        res.status(201).json        
+    }else{ 
+        return res.status(400).json({ message : httpRequestMessages.errorRegexPassword});
+    };
+
+    let regexEmail = REGEX_EMAIL  
+    if(!regexEmail.test(req.body.email)){    
+        return res.json({ message: httpRequestMessages.errorRegexEmail}) 
+    }
+    connection.query(admin.getAdminByEmail ,[req.body.email], async function(error, results, fields){
+        if (error){
+            res.status(401).json({error: error ,message: httpRequestMessages.errorChampsEmail})
+        }else{
+            if (results.length > 0){
+                const comparePassword = await bcrypt.compare(password, results[0].password)
+                if(comparePassword){
+                    res.status(201).json({                     
+                        id_admin: results[0].id_admin,                   
+                            token: jwt.sign (
+                            {id_admin: results[0].id_admin},                              
+                            process.env.JWT_TOKEN,
+                            { expiresIn: '24h' } 
+                        ),                                                 
+                        "success":  httpRequestMessages.successConnectAdmin             
+                    })     
+                }else { 
+                    res.status(401).json({error: error, message: httpRequestMessages.errorConnectionAdmin})
+                }
+            }else{
+                res.status(401).json({error : error ,message: httpRequestMessages.errorEmailNotExist})
+            }
+        }
+    })
+}

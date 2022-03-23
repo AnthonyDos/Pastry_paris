@@ -4,7 +4,7 @@ const admin = require('../controller/AdminController');
 const auth = require('../middleware/auth');
 
 router.post('/createAdmin', admin.createAdmin);
-router.post('/admin/connexion');
+router.post('/connexion', admin.connectAdmin);
 router.get("/admin/name/:id_admin",auth)
 router.get("/admin/getAllAdmin", auth)
 router.put("/updateAdmin/:id_admin", auth),
