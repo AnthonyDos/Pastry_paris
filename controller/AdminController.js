@@ -98,32 +98,24 @@ exports.connectAdmin = (req, res)=>{
 }
 
 exports.getAllAdmin = (req, res)=>{
-    const isAdmin = 1
-    if(isAdmin === 1){
-        connection.query(admin.getAllAdmin,[isAdmin],(error,result)=>{
-            if(error){
-                res.status(401).json({error: error, message: httpRequestMessages.errorGetAllAdmin})
-            }else{
-                res.status(200).json({result: result, message: httpRequestMessages.successGetAllAdmin})
-            }
-        })
-    }else{
-        res.status(401).json({message: httpRequestMessages.errorUnauthorized})
-    }
+    connection.query(admin.getAllAdmin,(error,result)=>{
+        if(error){
+            res.status(401).json({error: error, message: httpRequestMessages.errorGetAllAdmin})
+        }else{
+            res.status(200).json({result: result, message: httpRequestMessages.successGetAllAdmin})
+        }
+    })
 }
 
 exports.getAdminById = (req, res)=>{
-    const isAdmin = 1
-    if(isAdmin === 1){
-        const id_admin = req.params.id_admin 
-        connection.query(admin.getAdminById,[id_admin],(error,result)=>{
-            if(result[0] === undefined){
-                res.status(401).json({error: error, message: httpRequestMessages.errorGetAdminById})
-            }else{
-                res.status(200).json({result: result, message : httpRequestMessages.successGetAdminById})
-            }
-        })
-    }
+    const id_admin = req.params.id_admin 
+    connection.query(admin.getAdminById,[id_admin],(error,result)=>{
+        if(result[0] === undefined){
+            res.status(401).json({error: error, message: httpRequestMessages.errorGetAdminById})
+        }else{
+           res.status(200).json({result: result, message : httpRequestMessages.successGetAdminById})
+        }
+    })
 }
 
 exports.updateAdmin = async (req, res)=>{
