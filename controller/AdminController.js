@@ -124,5 +124,46 @@ exports.getAdminById = (req, res)=>{
             }
         })
     }
+}
 
+exports.updateAdmin = async (req, res)=>{
+    const encryptedPassword =   await  bcrypt.hash(req.body.password, 10);
+    const {nom,password, email} = req.body;
+    connection.query(admin.getAdminById,[req.params.id_admin],(error,result)=>{
+        const recuperationPassword = result[0].password
+        const recuperationEmail = result[0].email
+        if (error) {
+            res.status(400).json({error: error, message: httpRequestMessages})
+        }else{
+            if (req.body.password === null || req.body.password === " " ) {
+                connection.query(admin.updateAdminById,[nom,recuperationPassword,email, req.params.id_admin],(error,result)=>{
+                    if(error){
+                        res.status(400).json({error: error, message: httpRequestMessages.errorUpdateAdmin})
+                    }else{
+                        res.status(201).json({result: result, message: httpRequestMessages.successUpdateAdmin})
+                    }
+                })
+            }else if(email === null || email === "" ){
+                connection.query(admin.updateAdminById,[nom,encryptedPassword,recuperationEmail,req.params.id_admin],(error,result)=>{
+                    if (error) {
+                        res.status(400).json({error: error, message: httpRequestMessages.errorUpdateAdmin})
+                    }else{
+                        res.status(201).json({result: result, message: httpRequestMessages.successUpdateAdmin})
+                    }
+                })
+            }else{
+                if(password.match(REGEX_PASSWORD)){
+                    connection.query(admin.updateAdminById,[nom, encryptedPassword, email, req.params.id_admin],(error,result)=>{
+                        if (error) {
+                            res.status(400).json({error: error, message: httpRequestMessages.errorUpdateAdmin})
+                        }else{ 
+                            res.status(201).json({result: result, message: httpRequestMessages.successUpdateAdmin})
+                        }
+                    })
+                }else{
+                   res.status(400).json({message: httpRequestMessages.errorRegexPassword})
+                }
+            }
+        }
+    })
 }

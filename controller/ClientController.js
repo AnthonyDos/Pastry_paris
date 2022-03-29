@@ -187,12 +187,12 @@ exports.updateClient = async (req, res) =>{
     const encryptedPassword =   await  bcrypt.hash(req.body.password, 10);
     const {nom, prenom, email, password, phone, adresse, ville,codePostal, pays} =req.body
     connection.query(client.getClientById,[req.params.id_user],(error,result)=>{
-        const recuperationPassword = result[0].password
-        const recuperationEmail = result[0].email
-        console.log(recuperationEmail)
-        if(error){
+       
+        if(result.length < 1){
             res.status(400).json({error: error, message: httpRequestMessages.errorClientEchecConnexion})
         }else{
+            const recuperationPassword = result[0].password
+            const recuperationEmail = result[0].email
             if(password === null || password === ""){  
                 connection.query(client.updateClient,
                     [
@@ -259,20 +259,7 @@ exports.updateClient = async (req, res) =>{
                     ],(error, result) =>{
                     if(error){
                         res.status(400).json({error: error, message: httpRequestMessages.errorUpdateClient})
-    
                     }else{
-                        let comparePassword = bcrypt.hash(req.body.password, 10 )  
-                        if (comparePassword){
-                            return res.status(200).json({
-                                email: req.body.email,
-                                id_user: req.params.id_user,                                 
-                                token: jwt.sign({ id_user: req.params.id_user},
-                                    process.env.JWT_TOKEN,
-                                    { expiresIn: '12h' })
-                            }) 
-                        }else{
-                            res.status(400).json({error: error, message: httpRequestMessages.errorClientEmailPasswordNoCorrespond})
-                        } 
                         res.status(201).json({result: result, message: httpRequestMessages.successModification})
                     }
                 })
