@@ -167,3 +167,14 @@ exports.updateAdmin = async (req, res)=>{
         }
     })
 }
+
+exports.deleteAdmin = (req, res)=>{
+    const id_admin = req.params.id_admin
+    connection.query(admin.deleteAdminById,[id_admin],(error,result)=>{
+        if(result.affectedRows > 0){
+            res.status(200).json({result: result, message: httpRequestMessages.successDeleteAdmin})
+        }else{
+            res.status(400).json({error:error, message: httpRequestMessages.errorDeleteAdmin})
+        }
+    })
+}

@@ -4,6 +4,7 @@ exports.successConnectAdmin = "Connection de l'admin avec succés !"
 exports.successGetAllAdmin = "Récupération de tous les admins avec succés !"
 exports.successGetAdminById = "Récupération de l'admin par id avec succés !"
 exports.successUpdateAdmin = "Modification de l'admin avec succés !"
+exports.successDeleteAdmin = "Suppression de l'admin avec succés !"
 
 
 //error
@@ -19,3 +20,4 @@ exports.errorUnauthorized = "Erreur vous n'êtes pas autorisé a avoir accés au
 exports.errorGetAdminById = "Erreur lors de la récupération de l'admin par id !"
 exports.errorUpdateAdmin = "Erreur lors de la modification de l'admin !"
 exports.errorRegex = "Erreur le password ou l'email ne respecte pas le regex !"
+exports.errorDeleteAdmin = "Erreur lors de la suppression de l'admin !"
