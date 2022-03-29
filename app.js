@@ -20,6 +20,8 @@ const commandeRoutes = require('./routes/routesCommande');
 const boutiqueRoutes = require('./routes/routesBoutique');
 const patisserieRoutes = require('./routes/routesPatisserie');
 const adminRoutes = require('./routes/routesAdmin');
+const messageRoutes = require('./routes/routesMessage');
+
 //en-tête
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*'); 
@@ -38,5 +40,6 @@ app.use(baseUrl.commandeUrl, commandeRoutes);
 app.use(baseUrl.boutiqueUrl, boutiqueRoutes);
 app.use(baseUrl.patisserieUrl, patisserieRoutes);
 app.use(baseUrl.adminUrl, adminRoutes);
+app.use(baseUrl.messageUrl, messageRoutes);
 
 module.exports = app; 
