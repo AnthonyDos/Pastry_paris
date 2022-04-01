@@ -8,6 +8,15 @@ exports.createCommande= (req,res)=>{
     const {numeroCommande, id_user, idBoutique, dateCommande, livraison, prixTotal, patisseries} = req.body;
     connection.query(client.getClientPointFideliteCommande,[id_user],(error, result)=>{
         const {pointFidelite,pointReservation,numero_passage, numeroPassage} = result[0]
+        if(pointFidelite + pointReservation > 9 && pointFidelite < 49){
+            statusFidelite = "argent"
+        }
+        if(pointFidelite + pointReservation > 49){
+            statusFidelite = "Or"
+        }
+        if(pointFidelite + pointReservation < 9){
+            statusFidelite = "bronze"
+        }
         if (error) {
             res.status(400).json({error: error, message: HttpRequestMessagesUser.errorGetClientById})
         }else{
@@ -15,7 +24,8 @@ exports.createCommande= (req,res)=>{
                 if(error){
                     res.status(400).json({error: error, message:httpRequestMessagesCommande.errorCreateCommande})
                 }else{
-                    connection.query(client.UpdatePointFidelite,[pointFidelite + pointReservation,numero_passage + numeroPassage, id_user],(error, result)=>{
+                    
+                    connection.query(client.UpdatePointFidelite,[pointFidelite + pointReservation,numero_passage + numeroPassage,statusFidelite, id_user],(error, result)=>{
                         if (error) {
                             res.status(400).json({error: error, message: HttpRequestMessagesUser.errorUpdatePointFidelite})
                         }else{
