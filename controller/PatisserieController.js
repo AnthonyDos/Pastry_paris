@@ -4,7 +4,8 @@ const httpRequestMessagesPatisserie = require('../httpRequestMessages/HttpReques
 
 exports.createPatisserie = (req, res)=>{
     const {nomProduit, ingredients, prix, numeroProduit, idBoutique} = req.body
-    connection.query(patisserie.createPatisserie,[idBoutique,nomProduit, ingredients, prix,numeroProduit], (error, result)=>{
+    const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file?.filename}`
+    connection.query(patisserie.createPatisserie,[idBoutique,nomProduit, ingredients, prix,numeroProduit, imageUrl], (error, result)=>{
         if(error){
             res.status(400).json({error: error, message: httpRequestMessagesPatisserie.errorCreatePatisserie})
         }else{
@@ -53,7 +54,8 @@ exports.updatePatisserie = (req,res)=>{
             if(result.length > 0){
                 const {id_patisserie, idBoutique} = result[0] 
                 const {nomProduit, ingredients, prix, numeroProduit} = req.body
-                connection.query(patisserie.updatePatisserieByIdPatisserie,[nomProduit,ingredients,prix, numeroProduit,idBoutique, id_patisserie],(error,result)=>{
+                const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file?.filename}`
+                connection.query(patisserie.updatePatisserieByIdPatisserie,[nomProduit,ingredients,prix, numeroProduit,idBoutique,imageUrl, id_patisserie],(error,result)=>{
                     if(error){
                         res.status(400).json({error: error, message:httpRequestMessagesPatisserie.errorUpdatePatisserie})
                     }else{

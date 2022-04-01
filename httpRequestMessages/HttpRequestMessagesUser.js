@@ -21,6 +21,8 @@ exports.successDeleteClient = "la suppression du client est un succés!"
 
 exports.successUpdatePassword = "La modification du mot de passe est prise en compte !"
 
+exports.successUpdatePointFidelite = "La modification des points fidélité est prise en compte !"
+
 
 //Error
 
@@ -59,3 +61,5 @@ exports.errorUpdateClient = "la modification n'est pas prise en compte!"
 exports.errorDeleteClient = "La suppression du client n'a pas été prise en compte !"
 
 exports.errorUpdatePasswordClient = "La modification du mot de passe n'est pas prise en compte!"
+
+exports.errorUpdatePointFidelite = "Erreur lors de la modification des points fidélité!"

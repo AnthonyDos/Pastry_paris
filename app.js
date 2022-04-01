@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-//let path = require('path');
+let path = require('path');
 const helmet = require('helmet');
 const baseUrl = require('./config/router/router')
 
@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 app.use(helmet())
 
 //router
-//app.use('/images', express.static(path.join(__dirname +'/images')))
+app.use('/images', express.static(path.join(__dirname +'/images')))
 app.use(baseUrl.clientUrl, clientRoutes);
 app.use(baseUrl.reservationUrl, reservationRoutes);
 app.use(baseUrl.commandeUrl, commandeRoutes);

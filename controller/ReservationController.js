@@ -1,6 +1,8 @@
 const connection = require('../config/sql/db.config');
 const reservation = require('../service/ReservationService');
-const httpRequestMessages = require('../httpRequestMessages/HttpRequestMessagesReservation')
+const httpRequestMessages = require('../httpRequestMessages/HttpRequestMessagesReservation');
+const HttpRequestMessagesUser = require('../httpRequestMessages/HttpRequestMessagesUser');
+const client = require('../service/ClientService');
 
 exports.getReservationByCriteres = (req, res) =>{
     const { dateReservation, id_reservation, numeroReservation, ville, numero_client, idBoutique, phone} = req.params
@@ -106,13 +108,28 @@ exports.getReservationByCriteres = (req, res) =>{
     }
 }
 
+
 exports.createReservation = (req,res)=>{
-    const {numeroReservation, id_user, idBoutique, horaire, dateReservation, nombreCouverts} = req.body
-    connection.query(reservation.createReservation,[numeroReservation,id_user, idBoutique, horaire,dateReservation, nombreCouverts],(error,result)=>{
-        if(error){
-            res.status(400).json({error : error, message: httpRequestMessages.errorCreateReservation})
+    const {numeroReservation, id_user, idBoutique, horaire, dateReservation, nombreCouverts} = req.body;
+    connection.query(client.getClientPointFideliteReservation,[id_user],(error, results)=>{
+        const {pointFidelite,pointReservation,numero_passage, numeroPassage} = results[0]
+        if (error) {
+            res.status(400).json({error: error, message: HttpRequestMessagesUser.errorGetClientById})
         }else{
-           res.status(201).json({result: result,message: httpRequestMessages.successCreateReservation})
+            connection.query(reservation.createReservation,[numeroReservation,id_user, idBoutique, horaire,dateReservation, nombreCouverts],(error,result)=>{
+                if(error){
+                    res.status(400).json({error: error, message:httpRequestMessages.errorCreateReservation})
+                }else{
+                    connection.query(client.UpdatePointFidelite,[pointFidelite + pointReservation,numero_passage + numeroPassage, id_user],(error, result)=>{
+                        if (error) {
+                            res.status(400).json({error: error, message: HttpRequestMessagesUser.errorUpdatePointFidelite})
+                        }else{
+                            res.status(200).json
+                        }
+                    })
+                    res.status(201).json({result: result, message: httpRequestMessages.successCreateReservation})
+                }
+            })
         }
     })
 }

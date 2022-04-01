@@ -1,14 +1,30 @@
 const connection = require('../config/sql/db.config');
 const commande = require('../service/CommandeService');
+const client = require('../service/ClientService');
 const httpRequestMessagesCommande = require('../httpRequestMessages/HttpRequestMessagesCommande');
+const HttpRequestMessagesUser = require('../httpRequestMessages/HttpRequestMessagesUser');
 
 exports.createCommande= (req,res)=>{
     const {numeroCommande, id_user, idBoutique, dateCommande, livraison, prixTotal, patisseries} = req.body;
-    connection.query(commande.createCommande,[dateCommande, numeroCommande, id_user, livraison, prixTotal, idBoutique, patisseries ],(error,result)=>{
-        if(error){
-            res.status(400).json({error: error, message:httpRequestMessagesCommande.errorCreateCommande})
+    connection.query(client.getClientPointFideliteCommande,[id_user],(error, result)=>{
+        const {pointFidelite,pointReservation,numero_passage, numeroPassage} = result[0]
+        if (error) {
+            res.status(400).json({error: error, message: HttpRequestMessagesUser.errorGetClientById})
         }else{
-            res.status(201).json({result: result, message: httpRequestMessagesCommande.successCreateCommande})
+            connection.query(commande.createCommande,[dateCommande, numeroCommande, id_user, livraison, prixTotal, idBoutique, patisseries ],(error,result)=>{
+                if(error){
+                    res.status(400).json({error: error, message:httpRequestMessagesCommande.errorCreateCommande})
+                }else{
+                    connection.query(client.UpdatePointFidelite,[pointFidelite + pointReservation,numero_passage + numeroPassage, id_user],(error, result)=>{
+                        if (error) {
+                            res.status(400).json({error: error, message: HttpRequestMessagesUser.errorUpdatePointFidelite})
+                        }else{
+                            res.status(200).json
+                        }
+                    })
+                    res.status(201).json({result: result, message: httpRequestMessagesCommande.successCreateCommande})
+                }
+            })
         }
     })
 }
