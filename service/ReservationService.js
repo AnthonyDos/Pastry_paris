@@ -1,11 +1,20 @@
 //création
 exports.createReservation = "INSERT INTO reservation SET dateDuJour= CURDATE(), numeroReservation= ? , id_user= ?, idBoutique= ?, horaire= ?, dateReservation= ?, nombreCouverts= ?"
+exports.createDateResa = "INSERT INTO dateresa SET dateResa= ?, couvertsDate= ?, idBoutique= ?"
 
+//bon
+exports.getDateResa = "SELECT * FROM dateresa INNER JOIN boutiques ON dateresa.idBoutique = boutiques.idBoutique WHERE boutiques.idBoutique= ? AND dateResa= ?"
+exports.updateDateResa = "UPDATE dateresa SET dateresa.couvertsDate= ? WHERE dateResa= ?"
+//fin bon test
+//get place dispo
+exports.getPlace = "SELECT placeDispo FROM reservation WHERE dateReservation= ?"
+exports.updatePlace = "UPDATE reservation SET reservation.placeDispo= ? WHERE dateReservation= ? "
 
 //récupération
 exports.getAllReservation = "SELECT * FROM reservation"
 
-exports.getAllReservationByDate ="SELECT *, DATE_FORMAT(reservation.dateReservation, '%d/%m/%Y') FROM reservation WHERE dateReservation= ?  "
+// exports.getAllReservationByDate ="SELECT *, DATE_FORMAT(reservation.dateReservation, '%d/%m/%Y') FROM reservation WHERE dateReservation= ?  "
+exports.getAllReservationByDateAndIdBoutique ="SELECT *, DATE_FORMAT(reservation.dateReservation, '%d/%m/%Y') FROM reservation INNER JOIN boutiques ON reservation.idBoutique = boutiques.idBoutique WHERE dateReservation= ? AND boutiques.idBoutique = ? "
 
 exports.getReservationById = "SELECT * FROM reservation WHERE id_reservation = ?"
 

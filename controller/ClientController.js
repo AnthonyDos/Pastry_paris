@@ -182,6 +182,17 @@ exports.getClientByCritere = (req, res) =>{
     }
 }
 
+// exports.updatePointFidelite = (req,res) =>{
+//     const id_user = req.params.id_user 
+//     connection.query(client.getClientById,[id_user],(error, result)=>{
+//         if(result.length < 1){
+//             res.status(400).json({error: error, message: httpRequestMessages.errorClientEchecConnexion})
+//         }else{
+//             const pointFidelite = result[0].pointFidelite
+//             connection.query
+//         }
+//     })
+// }
 
 exports.updateClient = async (req, res) =>{
     const encryptedPassword =   await  bcrypt.hash(req.body.password, 10);

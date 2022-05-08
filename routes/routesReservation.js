@@ -15,8 +15,9 @@ router.get('/getReservation/numeroclient/:numero_client/dateReservation/:dateRes
 router.get('/getReservation/telephone/:phone',auth, reservation.getReservationByCriteres);
 router.get('/getReservation/boutique/:idBoutique/dateReservation/:dateReservation',auth, reservation.getReservationByCriteres);
 router.put('/putReservation/numeroReservation/:numeroReservation',auth, reservation.updateReservationByCritere);
-router.delete('/deleteCommande/idReservation/:id_reservation',auth, reservation.deleteReservation);
-router.delete('/deleteCommande/numeroReservation/:numeroReservation',auth, reservation.deleteReservation);
+router.delete('/deleteReservation/idReservation/:id_reservation',auth, reservation.deleteReservation);
+router.delete('/deleteReservation/numeroReservation/:numeroReservation',auth, reservation.deleteReservation);
+router.delete('/deleteReservation/annulationReservation/:id_reservation',auth, reservation.CancelReservationById); //annulation reservation au moins 2h avant
 
 //gerer la route si un client ne souhaite pas avoir de compte il faut pouvoir lui sortir une facture
 

@@ -6,6 +6,14 @@ const HttpRequestMessagesUser = require('../httpRequestMessages/HttpRequestMessa
 
 exports.createCommande= (req,res)=>{
     const {numeroCommande, id_user, idBoutique, dateCommande, livraison, prixTotal, patisseries} = req.body;
+    const currentTime = new Date();
+    const timeMinutes = currentTime.getMinutes()
+    if(timeMinutes < 10){
+        var timeMinute = '0' + timeMinutes
+    }
+      
+    const heureCommande = currentTime.getHours() + "h" + timeMinute
+    
     connection.query(client.getClientPointFideliteCommande,[id_user],(error, result)=>{
         const {pointFidelite,pointReservation,numero_passage, numeroPassage} = result[0]
         if(pointFidelite + pointReservation > 9 && pointFidelite < 49){
@@ -20,7 +28,8 @@ exports.createCommande= (req,res)=>{
         if (error) {
             res.status(400).json({error: error, message: HttpRequestMessagesUser.errorGetClientById})
         }else{
-            connection.query(commande.createCommande,[dateCommande, numeroCommande, id_user, livraison, prixTotal, idBoutique, patisseries ],(error,result)=>{
+            
+            connection.query(commande.createCommande,[dateCommande,heureCommande, numeroCommande, id_user, livraison, prixTotal, idBoutique, patisseries ],(error,result)=>{
                 if(error){
                     res.status(400).json({error: error, message:httpRequestMessagesCommande.errorCreateCommande})
                 }else{
@@ -196,3 +205,4 @@ exports.deleteCommandeById = (req, res)=>{
         }
     })
 }
+
