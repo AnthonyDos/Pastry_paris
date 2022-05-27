@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+//const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const connection = require('../config/sql/db.config');
@@ -33,6 +34,7 @@ exports.createClient = async (req, res) =>{
                 }else {               
                     connection.query(client.createClient,
                         [
+                            req.body.civilite,
                             req.body.nom,
                             req.body.prenom, 
                             req.body.email, 
@@ -72,8 +74,7 @@ exports.createClient = async (req, res) =>{
 }
 
 exports.connectClient = async (req, res) =>{
-    
-    const encryptedPassword =   await  bcrypt.hash(req.body.password, 10);
+    const encryptedPassword = await bcrypt.hash(req.body.password, 10);
     const password = req.body.password
     const password_regex = REGEX_PASSWORD 
     id_user = req.body.id_user
@@ -193,6 +194,22 @@ exports.getClientByCritere = (req, res) =>{
 //         }
 //     })
 // }
+
+exports.updateNumeroClient = (req, res) =>{
+    connection.query(client.updateNumeroClient,[req.body.numero_client, req.body.numero_client],(error, result)=>{
+        console.log(result)
+        console.log(error)
+        if(error){
+            res.status(400).json({error: error, message: "numero client echoue"})
+        console.log({error: error})
+           
+        }else{
+            console.log(result)
+            res.status(200).json({result:result ,message: "numéro client changer avec succés !"})
+            
+        }
+    })
+}
 
 exports.updateClient = async (req, res) =>{
     const encryptedPassword =   await  bcrypt.hash(req.body.password, 10);
