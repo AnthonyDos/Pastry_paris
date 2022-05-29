@@ -23,6 +23,8 @@ exports.successUpdatePassword = "La modification du mot de passe est prise en co
 
 exports.successUpdatePointFidelite = "La modification des points fidélité est prise en compte !"
 
+exports.successCreateNumeroClient = "numéro client créé avec succés !"
+
 
 //Error
 
@@ -63,3 +65,5 @@ exports.errorDeleteClient = "La suppression du client n'a pas été prise en com
 exports.errorUpdatePasswordClient = "La modification du mot de passe n'est pas prise en compte!"
 
 exports.errorUpdatePointFidelite = "Erreur lors de la modification des points fidélité!"
+
+exports.errorCreateNumeroClient =  "échec lors de la création du numéro client !"

@@ -183,29 +183,17 @@ exports.getClientByCritere = (req, res) =>{
     }
 }
 
-// exports.updatePointFidelite = (req,res) =>{
-//     const id_user = req.params.id_user 
-//     connection.query(client.getClientById,[id_user],(error, result)=>{
-//         if(result.length < 1){
-//             res.status(400).json({error: error, message: httpRequestMessages.errorClientEchecConnexion})
-//         }else{
-//             const pointFidelite = result[0].pointFidelite
-//             connection.query
-//         }
-//     })
-// }
-
 exports.updateNumeroClient = (req, res) =>{
     connection.query(client.updateNumeroClient,[req.body.numero_client, req.body.numero_client],(error, result)=>{
         console.log(result)
         console.log(error)
         if(error){
-            res.status(400).json({error: error, message: "numero client echoue"})
+            res.status(400).json({error: error, message: httpRequestMessages.errorCreateNumeroClient})
         console.log({error: error})
            
         }else{
             console.log(result)
-            res.status(200).json({result:result ,message: "numéro client changer avec succés !"})
+            res.status(200).json({result:result ,message: httpRequestMessages.successCreateNumeroClient})
             
         }
     })
