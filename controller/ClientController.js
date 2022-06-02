@@ -56,9 +56,10 @@ exports.createClient = async (req, res) =>{
                                     id_user: req.params.id_user,                                 
                                     token: jwt.sign({ id_user: req.params.id_user},
                                         process.env.JWT_TOKEN,
-                                        { expiresIn: '12h' }),
-                                        "success": httpRequestMessages.successCreateClient
-                                })      
+                                        { expiresIn: '12h' }
+                                    ),
+                                    "success": httpRequestMessages.successCreateClient
+                                }) 
                             }else{
                                 res.status(401).json({error: error, message: httpRequestMessages.errorClientEmailPasswordNoCorrespond})
                             }                            
