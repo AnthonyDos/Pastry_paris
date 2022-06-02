@@ -28,7 +28,12 @@ INNER JOIN boutiques ON commandes.idBoutique = boutiques.idBoutique
 WHERE boutiques.idBoutique= ? AND commandes.numeroCommande=  ?`
 
 
-exports.getCommandeByNumeroClient =`SELECT  * 
+exports.getCommandeByNumeroClient =`SELECT commandes.id_commande,commandes.dateDuJour,commandes.heureDuJourCommande,
+commandes.numeroCommande,commandes.livraison,commandes.prixTotal,commandes.pointReservation,commandes.numeroPassage,
+boutiques.idBoutique,boutiques.nomBoutique,boutiques.adresse,boutiques.adresse,boutiques.ville,boutiques.codePostal,
+boutiques.pays,boutiques.phone,boutiques.horaire,boutiques.id_reservation,boutiques.id_patisserie,users.id_user,
+users.civilite,users.nom,users.prenom,users.prenom,users.email,users.statusFidelite,users.numero_passage,users.pointFidelite,
+patisseries.id_patisserie,patisseries.nomProduit,patisseries.ingredients,patisseries.prix
 FROM commandes 
 INNER JOIN users ON commandes.id_user= users.id_user 
 INNER JOIN patisseries ON commandes.id_patisserie= patisseries.id_patisserie 
