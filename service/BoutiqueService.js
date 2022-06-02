@@ -1,5 +1,6 @@
 //création d'une boutique
-exports.createBoutique = "INSERT INTO boutiques SET nomBoutique= ?, adresse= ?, ville= ?, codePostal= ?, pays= ?, phone= ?, horaire= ?"
+exports.createBoutique = `INSERT INTO boutiques 
+SET nomBoutique= ?, adresse= ?, ville= ?, codePostal= ?, pays= ?, phone= ?, horaire= ?`
 
 //get boutique
 exports.getAllBoutiques = "SELECT * FROM boutiques"
@@ -9,7 +10,9 @@ exports.getBoutiqueByPays = "SELECT * FROM boutiques WHERE pays= ?"
 
 
 // update boutique
-exports.updateBoutiqueByIdBoutique = "UPDATE boutiques SET nomBoutique= ?, adresse= ?, codePostal= ?, ville= ?, pays= ?, phone= ?, horaire= ? WHERE idBoutique= ?"
+exports.updateBoutiqueByIdBoutique = `UPDATE boutiques 
+SET nomBoutique= ?, adresse= ?, codePostal= ?, ville= ?, pays= ?, phone= ?, horaire= ? 
+WHERE idBoutique= ?`
 
 //delete boutique
 exports.deleteBoutiqueById = "DELETE FROM boutiques WHERE idBoutique= ?"

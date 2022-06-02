@@ -1,5 +1,6 @@
 //create message
-exports.createMessage = "INSERT INTO messages SET nomClient= ?, prenomClient= ?, emailClient= ?, messageClient= ?, titreMessage= ?, numero_client= ?"
+exports.createMessage = `INSERT INTO messages 
+SET nomClient= ?, prenomClient= ?, emailClient= ?, messageClient= ?, titreMessage= ?, numero_client= ?`
 
 
 //get

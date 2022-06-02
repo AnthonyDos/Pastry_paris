@@ -102,7 +102,7 @@ exports.getCommandByIdBoutiqueAndNumeroCommand = (req,res)=>{
 }
 
 exports.getCommandByNumeroClient = (req,res)=>{
-    const {numero_client} = req.params
+    const { numero_client } = req.params
     connection.query(commande.getCommandeByNumeroClient,[numero_client],(error,result)=>{
         console.log(result)
         if(result < 1 ){
