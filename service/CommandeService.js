@@ -28,7 +28,7 @@ INNER JOIN boutiques ON commandes.idBoutique = boutiques.idBoutique
 WHERE boutiques.idBoutique= ? AND commandes.numeroCommande=  ?`
 
 
-exports.getCommandeByNumeroClient =`SELECT commandes.id_commande,commandes.dateDuJour,commandes.heureDuJourCommande,
+exports.getCommandeByNumeroClient =`SELECT commandes.id_commande,DATE_FORMAT(commandes.dateDuJour, '%d/%m/%Y') AS dateDuJour,commandes.heureDuJourCommande,
 commandes.numeroCommande,commandes.livraison,commandes.prixTotal,commandes.pointReservation,commandes.numeroPassage,
 boutiques.idBoutique,boutiques.nomBoutique,boutiques.adresse,boutiques.adresse,boutiques.ville,boutiques.codePostal,
 boutiques.pays,boutiques.phone,boutiques.horaire,boutiques.id_reservation,boutiques.id_patisserie,users.id_user,
