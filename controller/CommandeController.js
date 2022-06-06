@@ -3,9 +3,20 @@ const commande = require('../service/CommandeService');
 const client = require('../service/ClientService');
 const httpRequestMessagesCommande = require('../httpRequestMessages/HttpRequestMessagesCommande');
 const HttpRequestMessagesUser = require('../httpRequestMessages/HttpRequestMessagesUser');
+const { 
+    STATUS_BRONZE, 
+    STATUS_OR, 
+    STATUS_ARGENT, 
+    POINT_FIDELITE, 
+    POINT_RESERVATION, 
+    NUMERO_PASSAGE_TABLE_USER, 
+    NUMERO_PASSAGE_TABLE_COMMANDE 
+} = require('../config/ConstantProperties');
+
 
 exports.createCommande= (req,res)=>{
-    const {numeroCommande, id_user, idBoutique, dateCommande, livraison, prixTotal, patisseries} = req.body;
+    const {numeroCommande, id_user, idBoutique, dateCommande, livraison, prixTotal,id_patisserie, patisseriesList} = req.body;
+    console.log(id_user)
     const currentTime = new Date();
     const timeMinutes = currentTime.getMinutes()
     if(timeMinutes < 10){
@@ -15,35 +26,64 @@ exports.createCommande= (req,res)=>{
     const heureCommande = currentTime.getHours() + "h" + timeMinute
     
     connection.query(client.getClientPointFideliteCommande,[id_user],(error, result)=>{
-        const {pointFidelite,pointReservation,numero_passage, numeroPassage} = result[0]
-        if(pointFidelite + pointReservation > 9 && pointFidelite < 49){
-            statusFidelite = "argent"
-        }
-        if(pointFidelite + pointReservation > 49){
-            statusFidelite = "Or"
-        }
-        if(pointFidelite + pointReservation < 9){
-            statusFidelite = "bronze"
-        }
-        if (error) {
-            res.status(400).json({error: error, message: HttpRequestMessagesUser.errorGetClientById})
-        }else{
+        if (result.length === undefined || result.length === [] || result[0] === undefined) {
+            const pointFidelite = POINT_FIDELITE
+            const pointReservation = POINT_RESERVATION
+            const numero_passage = NUMERO_PASSAGE_TABLE_USER
+            const numeroPassage = NUMERO_PASSAGE_TABLE_COMMANDE
+            const statusFidelite = STATUS_BRONZE
             
-            connection.query(commande.createCommande,[dateCommande,heureCommande, numeroCommande, id_user, livraison, prixTotal, idBoutique, patisseries ],(error,result)=>{
-                if(error){
-                    res.status(400).json({error: error, message:httpRequestMessagesCommande.errorCreateCommande})
-                }else{
-                    
-                    connection.query(client.UpdatePointFidelite,[pointFidelite + pointReservation,numero_passage + numeroPassage,statusFidelite, id_user],(error, result)=>{
-                        if (error) {
-                            res.status(400).json({error: error, message: HttpRequestMessagesUser.errorUpdatePointFidelite})
-                        }else{
-                            res.status(200).json
-                        }
-                    })
-                    res.status(201).json({result: result, message: httpRequestMessagesCommande.successCreateCommande})
-                }
-            })
+            if (error) {
+                res.status(400).json({ error: error, message: HttpRequestMessagesUser.errorGetClientById })
+            } else {
+                connection.query(commande.createCommande, [dateCommande, heureCommande, numeroCommande, id_user, livraison, prixTotal, idBoutique, patisseriesList, id_patisserie], (error, result) => {
+                    if (error) {
+                        res.status(400).json({ error: error, message: httpRequestMessagesCommande.errorCreateCommande })
+                    } else {
+                        connection.query(client.UpdatePointFidelite, [pointFidelite + pointReservation, numero_passage + numeroPassage, statusFidelite, id_user], (error, result) => {
+                            if (error) {
+                                res.status(400).json({ error: error, message: HttpRequestMessagesUser.errorUpdatePointFidelite })
+                            } else {
+                                res.status(200).json
+                            }
+                        })
+                        res.status(201).json({ result: result, message: httpRequestMessagesCommande.successCreateCommande })
+                    }
+                })
+            }
+        } 
+        else {
+            const pointFideliteExist = result[0].pointFidelite
+            const pointReservationExist = result[0].pointReservation
+            const numeroPassageExist = result[0].numeroPassage
+            const numero_passageExist = result[0].numero_passage
+            if (pointFideliteExist + pointReservationExist > 49) {
+                var statusFideliteExist = STATUS_OR
+            }
+            if (pointFideliteExist + pointReservationExist > 9 && pointFideliteExist < 49) {   
+                var statusFideliteExist = STATUS_ARGENT
+            }
+            if (pointFideliteExist + pointReservationExist < 9) {
+                var statusFideliteExist = STATUS_BRONZE
+            }
+            if (error) {
+                res.status(400).json({ error: error, message: HttpRequestMessagesUser.errorGetClientById })
+            } else {
+                connection.query(commande.createCommande, [dateCommande, heureCommande, numeroCommande, id_user, livraison, prixTotal, idBoutique, patisseriesList, id_patisserie], (error, result) => {
+                    if (error) {
+                        res.status(400).json({ error: error, message: httpRequestMessagesCommande.errorCreateCommande })
+                    } else {
+                        connection.query(client.UpdatePointFidelite, [parseInt(pointFideliteExist + pointReservationExist), parseInt(numero_passageExist + numeroPassageExist), statusFideliteExist, id_user], (error, result) => {
+                            if (error) {
+                                res.status(400).json({ error: error, message: HttpRequestMessagesUser.errorUpdatePointFidelite })
+                            } else {
+                                res.status(200).json
+                            }
+                        })
+                        res.status(201).json({ result: result, message: httpRequestMessagesCommande.successCreateCommande })
+                    }
+                })
+            }
         }
     })
 }
@@ -103,12 +143,15 @@ exports.getCommandByIdBoutiqueAndNumeroCommand = (req,res)=>{
 
 exports.getCommandByNumeroClient = (req,res)=>{
     const { numero_client } = req.params
+    console.log(numero_client)
     connection.query(commande.getCommandeByNumeroClient,[numero_client],(error,result)=>{
+        console.log(error)
         console.log(result)
         if(result < 1 ){
-            console.log(error)
+            console.log({error: error})
             res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByNumeroClient})
         }else{
+            console.log({result : result})
             res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByNumeroClient})
         }
     })
@@ -161,10 +204,10 @@ exports.updateCommandeByCritere = (req,res) =>{
     if(id_commande != undefined){
         connection.query(commande.getCommandeById,[id_commande],(error,result)=>{
             if(result.length > 0){     
-                const {livraison, prixTotal, patisseries, dateCommande} = req.body
+                const {livraison, prixTotal, patisseriesList, dateCommande} = req.body
                 const {numeroCommande, id_user, idBoutique} = result[0]
-                connection.query(commande.updateCommandeByIdCommande,[dateCommande, numeroCommande, id_user, livraison, prixTotal, idBoutique, patisseries, id_commande],(error,results)=>{
-                    if(livraison != undefined && prixTotal != undefined && patisseries != undefined && dateCommande != undefined){
+                connection.query(commande.updateCommandeByIdCommande,[dateCommande, numeroCommande, id_user, livraison, prixTotal, idBoutique, patisseriesList, id_commande],(error,results)=>{
+                    if(livraison != undefined && prixTotal != undefined && patisseriesList != undefined && dateCommande != undefined){
                         res.status(201).json({results: results, message: httpRequestMessagesCommande.successUpdateCommandeByCriteres})
                     }else{
                         res.status(400).json({error: error, message: httpRequestMessagesCommande.errorUpdateCommandeByCritere})
@@ -179,11 +222,11 @@ exports.updateCommandeByCritere = (req,res) =>{
         connection.query(commande.getCommandeByNumeroCommande,[numeroCommande],(error,result)=>{
             if(result.length > 0){
                 console.log(result.length > 0)
-                const {livraison, prixTotal, patisseries, dateCommande} = req.body
+                const {livraison, prixTotal, patisseriesList, dateCommande} = req.body
                 const { id_user, idBoutique, id_commande} = result[0]
-                connection.query(commande.updateCommandeByNumeroCommande,[dateCommande, id_commande, id_user, livraison, prixTotal, idBoutique, patisseries, numeroCommande],(error,results)=>{
+                connection.query(commande.updateCommandeByNumeroCommande,[dateCommande, id_commande, id_user, livraison, prixTotal, idBoutique, patisseriesList, numeroCommande],(error,results)=>{
                     console.log(results)
-                    if( livraison != undefined && prixTotal != undefined && patisseries != undefined && dateCommande != undefined){
+                    if( livraison != undefined && prixTotal != undefined && patisseriesList != undefined && dateCommande != undefined){
                         res.status(201).json({results: results, message: httpRequestMessagesCommande.successUpdateCommandeByCriteres})
                     }else{
                         res.status(400).json({error: error, message: httpRequestMessagesCommande.errorUpdateCommandeByCritere})
