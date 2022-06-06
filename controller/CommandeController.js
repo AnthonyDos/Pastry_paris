@@ -154,14 +154,16 @@ exports.getCommandByNumeroClient = (req,res)=>{
         if(result < 1 ){
             res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByNumeroClient})
         }else{
+            console.log(result)
             res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByNumeroClient})
         }
     })
 }
 exports.getCommandByNumeroCommande = (req,res)=>{
-    const {numeroCommande} = req.params
-    connection.query(commande.getCommandeByNumeroCommande,[numeroCommande],(error,result)=>{
-        if(result < 1){
+    const {numeroCommande, idBoutique} = req.params
+    console.log(numeroCommande)
+    connection.query(commande.getCommandeByNumeroCommande,[numeroCommande,idBoutique],(error,result)=>{
+        if(result === undefined || result === null){
             res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByNumeroCommande})
         }else{
             res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByNumeroCommande})

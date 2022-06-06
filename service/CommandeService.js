@@ -40,19 +40,29 @@ WHERE boutiques.idBoutique= ? AND commandes.numeroCommande=  ?`
 // INNER JOIN boutiques ON patisseries.idBoutique = boutiques.idBoutique 
 // WHERE users.numero_client = ?`
 
-exports.getCommandeByNumeroClient =`SELECT commandes.id_commande,DATE_FORMAT(commandes.dateDuJour, '%d/%m/%Y') AS dateDuJour,commandes.heureDuJourCommande,
-commandes.numeroCommande,commandes.livraison,commandes.prixTotal,commandes.pointReservation,commandes.numeroPassage,commandes.patisseriesList,
-boutiques.idBoutique,boutiques.nomBoutique,boutiques.adresse,boutiques.adresse,boutiques.ville,boutiques.codePostal,
-boutiques.pays,boutiques.phone,boutiques.horaire,boutiques.id_reservation,boutiques.id_patisserie,users.id_user,
-users.civilite,users.nom,users.prenom,users.prenom,users.email,users.statusFidelite,users.numero_passage,users.pointFidelite,
-patisseries.id_patisserie,patisseries.nomProduit,patisseries.ingredients,patisseries.prix
+//exports.getCommandeByNumeroClient="SELECT * FROM commandes WHERE commandes.id_user= ?"
+
+// exports.getCommandeByNumeroClient =`SELECT commandes.id_commande,DATE_FORMAT(commandes.dateDuJour, '%d/%m/%Y') AS dateDuJour,commandes.heureDuJourCommande,
+// commandes.numeroCommande,commandes.livraison,commandes.prixTotal,commandes.pointReservation,commandes.numeroPassage,commandes.patisseriesList,
+// boutiques.idBoutique,boutiques.nomBoutique,boutiques.adresse,boutiques.adresse,boutiques.ville,boutiques.codePostal,
+// boutiques.pays,boutiques.phone,boutiques.horaire,boutiques.id_reservation,boutiques.id_patisserie,users.id_user,
+// users.civilite,users.nom,users.prenom,users.prenom,users.email,users.statusFidelite,users.numero_passage,users.pointFidelite,
+// patisseries.id_patisserie,patisseries.nomProduit,patisseries.ingredients,patisseries.prix
+// FROM commandes 
+// INNER JOIN users ON commandes.id_user= users.id_user 
+// INNER JOIN patisseries ON commandes.id_patisserie= patisseries.id_user
+// INNER JOIN boutiques ON patisseries.idBoutique = boutiques.idBoutique 
+// WHERE users.numero_client = ?`
+
+// exports.getCommandeByNumeroClient =`SELECT commandes.id_commande,DATE_FORMAT(commandes.dateDuJour, '%d/%m/%Y') AS dateDuJour,commandes.heureDuJourCommande,
+// commandes.numeroCommande,commandes.livraison,commandes.prixTotal,commandes.pointReservation,commandes.numeroPassage,commandes.patisseriesList,
+// FROM commandes 
+// WHERE commandes.id_user = ?`
+
+exports.getCommandeByNumeroClient =`SELECT *, DATE_FORMAT(commandes.dateDuJour, '%d/%m/%Y') AS dateDuJour,DATE_FORMAT(commandes.dateCommande, '%d/%m/%Y') AS dateCommande 
 FROM commandes 
-INNER JOIN users ON commandes.id_user= users.id_user 
-INNER JOIN patisseries ON commandes.id_patisserie= patisseries.id_user
-INNER JOIN boutiques ON patisseries.idBoutique = boutiques.idBoutique 
-WHERE users.numero_client = ?`
-
-
+INNER JOIN users ON commandes.id_user = users.id_user 
+WHERE users.numero_client= ?`
 
 // exports.getCommandeByNumeroCommande = `SELECT commandes.id_commande,DATE_FORMAT(commandes.dateDuJour, '%d/%m/%Y') AS dateDuJour,commandes.heureDuJourCommande,
 // commandes.numeroCommande,commandes.livraison,commandes.prixTotal,commandes.pointReservation,commandes.numeroPassage,commandes.patisseriesList,
@@ -64,9 +74,15 @@ WHERE users.numero_client = ?`
 // INNER JOIN boutiques ON patisseries.idBoutique = boutiques.idBoutique 
 // WHERE numeroCommande= ?`
 
-exports.getCommandeByNumeroCommande = `SELECT * 
+exports.getCommandeByNumeroCommande = `SELECT *,DATE_FORMAT(commandes.dateDuJour, '%d/%m/%Y') AS dateDuJour,boutiques.idBoutique,boutiques.nomBoutique,boutiques.adresse,boutiques.adresse,boutiques.ville,boutiques.codePostal,
+boutiques.pays,boutiques.phone,boutiques.horaire,boutiques.id_reservation
 FROM commandes
-WHERE numeroCommande= ?`
+INNER JOIN boutiques ON commandes.idBoutique = boutiques.idBoutique
+WHERE commandes.numeroCommande= ? `
+
+// exports.getCommandeByNumeroCommande = `SELECT * 
+// FROM commandes
+// WHERE numeroCommande= ?`
 
 
 exports.getCommandeByPhone = `SELECT * 
