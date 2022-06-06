@@ -5,12 +5,16 @@ const httpRequestMessagesCommande = require('../httpRequestMessages/HttpRequestM
 const HttpRequestMessagesUser = require('../httpRequestMessages/HttpRequestMessagesUser');
 const { 
     STATUS_BRONZE, 
-    STATUS_OR, 
-    STATUS_ARGENT, 
+    STATUS_GOLD, 
+    STATUS_SILVER, 
     POINT_FIDELITE, 
     POINT_RESERVATION, 
     NUMERO_PASSAGE_TABLE_USER, 
-    NUMERO_PASSAGE_TABLE_COMMANDE 
+    NUMERO_PASSAGE_TABLE_COMMANDE, 
+    VALUE_MIN_GOLD,
+    VALUE_MIN_SILVER,
+    VALUE_MAX_SILVER,
+    VALUE_MIN_BRONZE
 } = require('../config/ConstantProperties');
 
 
@@ -32,7 +36,8 @@ exports.createCommande= (req,res)=>{
             const numero_passage = NUMERO_PASSAGE_TABLE_USER
             const numeroPassage = NUMERO_PASSAGE_TABLE_COMMANDE
             const statusFidelite = STATUS_BRONZE
-            
+            const visit = numero_passage + numeroPassage
+            const bonus = pointFidelite + pointReservation
             if (error) {
                 res.status(400).json({ error: error, message: HttpRequestMessagesUser.errorGetClientById })
             } else {
@@ -40,7 +45,7 @@ exports.createCommande= (req,res)=>{
                     if (error) {
                         res.status(400).json({ error: error, message: httpRequestMessagesCommande.errorCreateCommande })
                     } else {
-                        connection.query(client.UpdatePointFidelite, [pointFidelite + pointReservation, numero_passage + numeroPassage, statusFidelite, id_user], (error, result) => {
+                        connection.query(client.UpdatePointFidelite, [bonus, visit, statusFidelite, id_user], (error, result) => {
                             if (error) {
                                 res.status(400).json({ error: error, message: HttpRequestMessagesUser.errorUpdatePointFidelite })
                             } else {
@@ -57,13 +62,15 @@ exports.createCommande= (req,res)=>{
             const pointReservationExist = result[0].pointReservation
             const numeroPassageExist = result[0].numeroPassage
             const numero_passageExist = result[0].numero_passage
-            if (pointFideliteExist + pointReservationExist > 49) {
-                var statusFideliteExist = STATUS_OR
+            const totalVisit = numero_passageExist + numeroPassageExist
+            const totalBonus = pointFideliteExist + pointReservationExist
+            if ( totalBonus > VALUE_MIN_GOLD) {
+                var statusFideliteExist = STATUS_GOLD
             }
-            if (pointFideliteExist + pointReservationExist > 9 && pointFideliteExist < 49) {   
-                var statusFideliteExist = STATUS_ARGENT
+            if (totalBonus > VALUE_MIN_SILVER && pointFideliteExist < VALUE_MAX_SILVER) {   
+                var statusFideliteExist = STATUS_SILVER
             }
-            if (pointFideliteExist + pointReservationExist < 9) {
+            if (totalBonus < VALUE_MIN_BRONZE) {
                 var statusFideliteExist = STATUS_BRONZE
             }
             if (error) {
@@ -73,7 +80,7 @@ exports.createCommande= (req,res)=>{
                     if (error) {
                         res.status(400).json({ error: error, message: httpRequestMessagesCommande.errorCreateCommande })
                     } else {
-                        connection.query(client.UpdatePointFidelite, [parseInt(pointFideliteExist + pointReservationExist), parseInt(numero_passageExist + numeroPassageExist), statusFideliteExist, id_user], (error, result) => {
+                        connection.query(client.UpdatePointFidelite, [parseInt(totalBonus), parseInt(totalVisit), statusFideliteExist, id_user], (error, result) => {
                             if (error) {
                                 res.status(400).json({ error: error, message: HttpRequestMessagesUser.errorUpdatePointFidelite })
                             } else {
