@@ -6,9 +6,10 @@ const connection = require('../config/sql/db.config');
 const httpRequestMessages = require('../httpRequestMessages/HttpRequestMessagesUser');
 const client = require('../service/ClientService');
 const {REGEX_EMAIL, REGEX_PASSWORD } =require('../config/Regex');
+const { SALT_BCRYPT, EXPIRE_TOKEN } = require('../config/ConstantProperties');
 
 exports.createClient = async (req, res) =>{
-    const encryptedPassword = await bcrypt.hash(req.body.password, 10);
+    const encryptedPassword = await bcrypt.hash(req.body.password, SALT_BCRYPT);
     const password = req.body.password
     const password_regex = REGEX_PASSWORD 
     id_user = req.body.id_user
@@ -49,14 +50,14 @@ exports.createClient = async (req, res) =>{
                         if (err){
                             res.status(401).json({err:err, message: httpRequestMessages.errorClientNonCreer})                     
                         }else { 
-                            let comparePassword = bcrypt.hash(req.body.password, 10 )    
+                            let comparePassword = bcrypt.hash(req.body.password, SALT_BCRYPT )    
                             if (comparePassword){
                                 return res.status(200).json({
                                     email: req.body.email,
                                     id_user: req.params.id_user,                                 
                                     token: jwt.sign({ id_user: req.params.id_user},
                                         process.env.JWT_TOKEN,
-                                        { expiresIn: '12h' }
+                                        { expiresIn: EXPIRE_TOKEN }
                                     ),
                                     "success": httpRequestMessages.successCreateClient
                                 }) 
@@ -75,7 +76,7 @@ exports.createClient = async (req, res) =>{
 }
 
 exports.connectClient = async (req, res) =>{
-    const encryptedPassword = await bcrypt.hash(req.body.password, 10);
+    const encryptedPassword = await bcrypt.hash(req.body.password, SALT_BCRYPT);
     const password = req.body.password
     const password_regex = REGEX_PASSWORD 
     id_user = req.body.id_user
@@ -102,7 +103,7 @@ exports.connectClient = async (req, res) =>{
                             token: jwt.sign (
                             {id_user: results[0].id_user},                              
                             process.env.JWT_TOKEN,
-                            { expiresIn: '24h' } 
+                            { expiresIn: EXPIRE_TOKEN } 
                         ),                                                 
                         "success":  httpRequestMessages.successClientConnect                   
                     })     
@@ -201,7 +202,7 @@ exports.updateNumeroClient = (req, res) =>{
 }
 
 exports.updateClient = async (req, res) =>{
-    const encryptedPassword =   await  bcrypt.hash(req.body.password, 10);
+    const encryptedPassword =   await  bcrypt.hash(req.body.password, SALT_BCRYPT);
     const {nom, prenom, email, password, phone, adresse, ville,codePostal, pays} =req.body
     connection.query(client.getClientById,[req.params.id_user],(error,result)=>{
        
@@ -225,7 +226,6 @@ exports.updateClient = async (req, res) =>{
                         null, 
                         req.params.id_user
                     ],(error, result) =>{
-                    console.log(req.params.password)
                     if(error){
                         res.status(400).json({error: error, message: httpRequestMessages.errorUpdateClient})
                     }else{
@@ -247,7 +247,6 @@ exports.updateClient = async (req, res) =>{
                         null, 
                         req.params.id_user
                     ],(error, result) =>{
-                    console.log(req.params.password)
                     if(error){
                         res.status(400).json({error: error, message: httpRequestMessages.errorUpdateClient})
                     }else{
@@ -306,7 +305,7 @@ exports.deleteClient = (req,res) =>{
 }
 
 exports.updateClientPassword = async (req, res) =>{
-    const encryptedPassword =   await  bcrypt.hash(req.body.password, 10);
+    const encryptedPassword =   await  bcrypt.hash(req.body.password, SALT_BCRYPT);
     const { password } =req.body
     connection.query(client.getClientById,[req.params.id_user],(error,result)=>{
         const recuperationPassword = result[0]
@@ -315,7 +314,6 @@ exports.updateClientPassword = async (req, res) =>{
         }else{
             if(password === null || password === ""){  
                 connection.query(client.UpdatePassword,[recuperationPassword.password,req.params.id_user],(error, result) =>{
-                    console.log(req.params.password)
                     if(error){
                         res.status(400).json({error: error, message: httpRequestMessages.errorUpdatePasswordClient})
                     }else{

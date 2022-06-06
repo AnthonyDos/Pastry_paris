@@ -1,16 +1,16 @@
 const connection = require('../config/sql/db.config');
 const message = require('../service/MessageService');
 const httpRequestMessages = require('../httpRequestMessages/HttpRequestMessagesMessage');
+const { TITLE_MESSAGE_LENGTH, MESSAGE_MAX_LENGTH } = require('../config/ConstantProperties');
 
 exports.createMessageClient = (req, res)=>{
     const { titreMessage, messageClient, nomClient, prenomClient, emailClient, numero_client } = req.body;
     if( titreMessage === "" || messageClient === "" || emailClient === null || emailClient === ""|| nomClient === null || nomClient === "" || prenomClient === null || prenomClient === ""){
         res.status(400).json({message: httpRequestMessages.errorChampsManquant})
-    }else if(titreMessage.length > 70 || messageClient.length > 1500){
+    }else if(titreMessage.length > TITLE_MESSAGE_LENGTH || messageClient.length > MESSAGE_MAX_LENGTH){
         res.status(400).json({message: httpRequestMessages.errorLongueurDuChamps})
     }else{
         connection.query(message.createMessage,[nomClient,prenomClient,emailClient,messageClient,titreMessage, numero_client],(error,result)=>{
-            console.log(titreMessage.length)
             if(result != undefined && result != null){
                 res.status(200).json({result: result, message: httpRequestMessages.successCreateMessage})
             }else{

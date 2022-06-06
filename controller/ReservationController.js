@@ -3,6 +3,16 @@ const reservation = require('../service/ReservationService');
 const httpRequestMessages = require('../httpRequestMessages/HttpRequestMessagesReservation');
 const HttpRequestMessagesUser = require('../httpRequestMessages/HttpRequestMessagesUser');
 const client = require('../service/ClientService');
+const { 
+    VALUE_MAX_BRONZE, 
+    VALUE_MIN_SILVER, 
+    VALUE_MAX_SILVER, 
+    VALUE_MIN_GOLD, 
+    STATUS_GOLD, 
+    STATUS_SILVER, 
+    STATUS_BRONZE, 
+    NOMBRE_COUVERT_MAX
+} = require('../config/ConstantProperties');
 
 exports.getReservationByCriteres = (req, res) =>{
     const { dateReservation, id_reservation, numeroReservation, ville, numero_client, idBoutique, phone} = req.params
@@ -115,14 +125,14 @@ exports.createReservation = (req, res) => {
     const FunctionUpdatePointFidelite = () => {
         connection.query(client.getClientPointFideliteReservation, [id_user], (error, results) => {
             const { pointFidelite, pointReservation, numero_passage, numeroPassage } = results[0]
-            if (pointFidelite + pointReservation > 9 && pointFidelite < 49) {
-                statusFidelite = "argent"
+            if (pointFidelite + pointReservation > VALUE_MIN_GOLD) {
+                statusFidelite = STATUS_GOLD
             }
-            if (pointFidelite + pointReservation > 49) {
-                statusFidelite = "Or"
+            if (pointFidelite + pointReservation > VALUE_MIN_SILVER && pointFidelite < VALUE_MAX_SILVER) {
+                statusFidelite = STATUS_SILVER
             }
-            if (pointFidelite + pointReservation < 9) {
-                statusFidelite = "bronze"
+            if (pointFidelite + pointReservation < VALUE_MAX_BRONZE) {
+                statusFidelite = STATUS_BRONZE
             }
             if (error) {
                 res.status(400).json({ error: error, message: HttpRequestMessagesUser.errorGetClientById })
@@ -143,7 +153,7 @@ exports.createReservation = (req, res) => {
             if (error) {
                 res.status(400).json({ error: error, message: httpRequestMessages.errorCreateReservation })
             } else {
-                if (nombreCouverts > 20) {
+                if (nombreCouverts > NOMBRE_COUVERT_MAX) {
                     res.status(400).json({ error: error, message: httpRequestMessages.errorReservationDisponibilite })
                 }else{
                     //première réservation pour le jour
@@ -170,7 +180,7 @@ exports.createReservation = (req, res) => {
             connection.query(reservation.getDateResa, [idBoutique, dateReservation], (error, result) => {
                 const totalCouvertsBdd = result[0].couvertsDate
                 const totalDispoAndCouvertsEnCours = totalCouvertsBdd + parseInt(nombreCouverts)
-                if (totalCouvertsBdd >= 20 || totalDispoAndCouvertsEnCours >= 20) {
+                if (totalCouvertsBdd >= NOMBRE_COUVERT_MAX || totalDispoAndCouvertsEnCours >= NOMBRE_COUVERT_MAX) {
                     res.status(400).json({ error: error, message: httpRequestMessages.errorReservationDisponibilite })
                 } else {
                     FunctionUpdatePointFidelite()

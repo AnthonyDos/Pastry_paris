@@ -14,7 +14,7 @@ const {
     VALUE_MIN_GOLD,
     VALUE_MIN_SILVER,
     VALUE_MAX_SILVER,
-    VALUE_MIN_BRONZE
+    VALUE_MAX_BRONZE
 } = require('../config/ConstantProperties');
 
 
@@ -70,7 +70,7 @@ exports.createCommande= (req,res)=>{
             if (totalBonus > VALUE_MIN_SILVER && pointFideliteExist < VALUE_MAX_SILVER) {   
                 var statusFideliteExist = STATUS_SILVER
             }
-            if (totalBonus < VALUE_MIN_BRONZE) {
+            if (totalBonus < VALUE_MAX_BRONZE) {
                 var statusFideliteExist = STATUS_BRONZE
             }
             if (error) {
@@ -150,15 +150,10 @@ exports.getCommandByIdBoutiqueAndNumeroCommand = (req,res)=>{
 
 exports.getCommandByNumeroClient = (req,res)=>{
     const { numero_client } = req.params
-    console.log(numero_client)
     connection.query(commande.getCommandeByNumeroClient,[numero_client],(error,result)=>{
-        console.log(error)
-        console.log(result)
         if(result < 1 ){
-            console.log({error: error})
             res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByNumeroClient})
         }else{
-            console.log({result : result})
             res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByNumeroClient})
         }
     })
