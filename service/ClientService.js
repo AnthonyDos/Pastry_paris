@@ -24,12 +24,12 @@ exports.getAllClientByCodePostal = 'SELECT * FROM users WHERE codePostal= ?'
 
 //create client
 exports.createClient = `INSERT INTO users 
-SET civilite= ?, nom= ?, prenom= ?, email= ?, password= ?, phone= ?, adresse= ?, ville= ?, codePostal= ?, pays= ?, numero_client= users.id_user`
+SET civilite= ?, nom= ?, prenom= ?, email= ?, password= ?, phone= ?, adresse= ?, ville= ?, codePostal= ?, pays= ?, numero_client= ?`
 
 exports.connectClient = 'SELECT * FROM users WHERE email = ? '
 
 exports.updateClient =` UPDATE users 
-SET nom= ?, prenom= ?, email= ?, password= ?, phone= ?, adresse= ?, ville= ?, codePostal= ?, pays= ?, numero_client= ? 
+SET nom= ?, prenom= ?, email= ?, password= ?, phone= ?, adresse= ?, ville= ?, codePostal= ?, pays= ?
 WHERE id_user= ?`
 
 exports.deleteClient = "DELETE FROM users WHERE id_user= ?"

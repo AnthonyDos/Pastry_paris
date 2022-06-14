@@ -74,7 +74,8 @@ WHERE users.numero_client= ?`
 // INNER JOIN boutiques ON patisseries.idBoutique = boutiques.idBoutique 
 // WHERE numeroCommande= ?`
 
-exports.getCommandeByNumeroCommande = `SELECT *,DATE_FORMAT(commandes.dateDuJour, '%d/%m/%Y') AS dateDuJour,boutiques.idBoutique,boutiques.nomBoutique,boutiques.adresse,boutiques.adresse,boutiques.ville,boutiques.codePostal,
+exports.getCommandeByNumeroCommande = `SELECT *, DATE_FORMAT(commandes.dateDuJour, '%d/%m/%Y') AS dateDuJour,boutiques.idBoutique,
+boutiques.nomBoutique,boutiques.adresse,boutiques.adresse,boutiques.ville,boutiques.codePostal,
 boutiques.pays,boutiques.phone,boutiques.horaire,boutiques.id_reservation
 FROM commandes
 INNER JOIN boutiques ON commandes.idBoutique = boutiques.idBoutique

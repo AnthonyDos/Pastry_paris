@@ -45,11 +45,13 @@ exports.createClient = async (req, res) =>{
                             req.body.ville, 
                             req.body.codePostal, 
                             req.body.pays, 
-                            req.params.id_user
+                            req.body.numero_client
                         ],(error,result)=>{  
                         if (err){
                             res.status(401).json({err:err, message: httpRequestMessages.errorClientNonCreer})                     
                         }else { 
+                            console.log(result)
+                            console.log(req.body.numero_client)
                             let comparePassword = bcrypt.hash(req.body.password, SALT_BCRYPT )    
                             if (comparePassword){
                                 return res.status(200).json({
@@ -187,16 +189,10 @@ exports.getClientByCritere = (req, res) =>{
 
 exports.updateNumeroClient = (req, res) =>{
     connection.query(client.updateNumeroClient,[req.body.numero_client, req.body.numero_client],(error, result)=>{
-        console.log(result)
-        console.log(error)
         if(error){
             res.status(400).json({error: error, message: httpRequestMessages.errorCreateNumeroClient})
-        console.log({error: error})
-           
         }else{
-            console.log(result)
             res.status(200).json({result:result ,message: httpRequestMessages.successCreateNumeroClient})
-            
         }
     })
 }
@@ -222,8 +218,7 @@ exports.updateClient = async (req, res) =>{
                         adresse, 
                         ville,
                         codePostal, 
-                        pays, 
-                        null, 
+                        pays,  
                         req.params.id_user
                     ],(error, result) =>{
                     if(error){
@@ -243,8 +238,7 @@ exports.updateClient = async (req, res) =>{
                         adresse, 
                         ville,
                         codePostal, 
-                        pays, 
-                        null, 
+                        pays,  
                         req.params.id_user
                     ],(error, result) =>{
                     if(error){
@@ -270,7 +264,6 @@ exports.updateClient = async (req, res) =>{
                         ville,
                         codePostal, 
                         pays, 
-                        null, 
                         req.params.id_user
                     ],(error, result) =>{
                     if(error){
