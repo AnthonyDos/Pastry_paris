@@ -59,10 +59,24 @@ WHERE boutiques.idBoutique= ? AND commandes.numeroCommande=  ?`
 // FROM commandes 
 // WHERE commandes.id_user = ?`
 
+//A REMETTRE AU CAS OU CA NE FONCTIONNE PAS
+// exports.getCommandeByNumeroClient =`SELECT *, DATE_FORMAT(commandes.dateDuJour, '%d/%m/%Y') AS dateDuJour,DATE_FORMAT(commandes.dateCommande, '%d/%m/%Y') AS dateCommande 
+// FROM commandes 
+// INNER JOIN users ON commandes.id_user = users.id_user 
+
+// WHERE users.numero_client= ?`
+
+///FIN
+
 exports.getCommandeByNumeroClient =`SELECT *, DATE_FORMAT(commandes.dateDuJour, '%d/%m/%Y') AS dateDuJour,DATE_FORMAT(commandes.dateCommande, '%d/%m/%Y') AS dateCommande 
 FROM commandes 
 INNER JOIN users ON commandes.id_user = users.id_user 
-WHERE users.numero_client= ?`
+INNER JOIN boutiques ON commandes.idBoutique = boutiques.idBoutique
+WHERE users.numero_client= ? ORDER BY commandes.dateDuJour DESC`
+
+
+/////////////
+
 
 // exports.getCommandeByNumeroCommande = `SELECT commandes.id_commande,DATE_FORMAT(commandes.dateDuJour, '%d/%m/%Y') AS dateDuJour,commandes.heureDuJourCommande,
 // commandes.numeroCommande,commandes.livraison,commandes.prixTotal,commandes.pointReservation,commandes.numeroPassage,commandes.patisseriesList,

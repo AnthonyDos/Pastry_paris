@@ -24,7 +24,7 @@ exports.getAllClientByCodePostal = 'SELECT * FROM users WHERE codePostal= ?'
 
 //create client
 exports.createClient = `INSERT INTO users 
-SET civilite= ?, nom= ?, prenom= ?, email= ?, password= ?, phone= ?, adresse= ?, ville= ?, codePostal= ?, pays= ?, numero_client= ?`
+SET isAdmin= 0,civilite= ?, nom= ?, prenom= ?, email= ?, password= ?, phone= ?, adresse= ?, ville= ?, codePostal= ?, pays= ?, numero_client= ?`
 
 exports.connectClient = 'SELECT * FROM users WHERE email = ? '
 

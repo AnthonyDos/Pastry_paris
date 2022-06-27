@@ -79,7 +79,9 @@ exports.connectAdmin = (req, res)=>{
                 const comparePassword = await bcrypt.compare(password, results[0].password)
                 if(comparePassword){
                     res.status(201).json({                     
-                        id_admin: results[0].id_admin,                   
+                        id_admin: results[0].id_admin,
+                        isAdmin: results[0].isAdmin,
+                        result: results[0],                  
                             token: jwt.sign (
                             {id_admin: results[0].id_admin},                              
                             process.env.JWT_TOKEN,

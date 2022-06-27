@@ -131,8 +131,10 @@ exports.getAllClients = (req, res) =>{
         })
     }else if(codePostal != undefined){
         connection.query(client.getAllClientByCodePostal,[codePostal],(error,results)=>{
-            if (results[0].length === req.body.codePostal) {
+            if (results[0]) {
                 res.status(201).json({results :results, message : httpRequestMessages.successGetAllClientByCodePostal})
+            }else if(results[0] === null){
+                res.status(400).json({error:error,message: httpRequestMessages.errorGetAllClient})
             }else{
                 res.status(400).json({error:error,message: httpRequestMessages.errorGetAllClient})
             }
