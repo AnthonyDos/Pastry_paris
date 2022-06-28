@@ -59,7 +59,8 @@ WHERE boutiques.idBoutique= ? AND reservation.DateReservation= ?`
 
 //modification
 exports.updateReservationByNumeroReservation = `UPDATE reservation 
-SET dateDuJour= ?, reservation.nombreCouverts= ?, reservation.dateReservation= ?, reservation.horaire= ?, reservation.numeroReservation= ?, reservation.idBoutique= ?, reservation.id_user= ? 
+SET dateDuJour= ?, reservation.nombreCouverts= ?, reservation.dateReservation= ?, reservation.horaire= ?, 
+reservation.numeroReservation= ?, reservation.idBoutique= ?, reservation.id_user= ? 
 WHERE reservation.numeroReservation= ? `
 
 //suppression

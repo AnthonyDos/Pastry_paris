@@ -1,9 +1,11 @@
 //création commande
 //exports.createCommande = "INSERT INTO commandes SET dateDuJour= CURDATE(),dateCommande= ?, numeroCommande= ?, id_user= ?, livraison= ?, prixTotal= ?, idBoutique= ?, isAdmin= 1, patisseries= ? "
-exports.createCommande = "INSERT INTO commandes SET dateDuJour= CURDATE(),dateCommande= ?,heureDuJourCommande= ?, numeroCommande= ?, id_user= ?, livraison= ?, prixTotal= ?, idBoutique= ?, isAdmin= 1,patisseriesList= ?, id_patisserie= ?"
+exports.createCommande = `INSERT INTO commandes SET dateDuJour= CURDATE(),dateCommande= ?,heureDuJourCommande= ?, numeroCommande= ?, 
+id_user= ?, livraison= ?, prixTotal= ?, idBoutique= ?, isAdmin= 1,patisseriesList= ?, id_patisserie= ?`
 
 //get commande by critères
-exports.getAllCommandes = "SELECT * FROM commandes"
+exports.getAllCommandes = `SELECT *, DATE_FORMAT(commandes.dateDuJour, '%d/%m/%Y') AS dateDuJour, DATE_FORMAT(commandes.dateCommande, '%d/%m/%Y') AS dateCommande 
+FROM commandes INNER JOIN users ON commandes.id_user= users.id_user ORDER BY commandes.dateDuJour DESC;`
 
 exports.getCommandeById = "SELECT * FROM commandes WHERE id_commande= ?"
 
