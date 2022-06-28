@@ -16,7 +16,10 @@ exports.getPlace = "SELECT placeDispo FROM reservation WHERE dateReservation= ?"
 exports.updatePlace = "UPDATE reservation SET reservation.placeDispo= ? WHERE dateReservation= ? "
 
 //récupération
-exports.getAllReservation = "SELECT * FROM reservation"
+exports.getAllReservation = `SELECT *,DATE_FORMAT(reservation.dateDuJour, '%d/%m/%Y') AS dateDuJour,
+DATE_FORMAT(reservation.dateReservation, '%d/%m/%Y') AS dateReservation 
+FROM reservation
+INNER JOIN users ON reservation.id_user= users.id_user ORDER BY reservation.dateDuJour DESC;`
 
 exports.getAllReservationByDateAndIdBoutique =`SELECT *, DATE_FORMAT(reservation.dateReservation, '%d/%m/%Y') 
 FROM reservation 
