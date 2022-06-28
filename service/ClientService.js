@@ -21,6 +21,7 @@ exports.getClientByEmail = 'SELECT * FROM users WHERE  email = ?'
 
 exports.getAllClientByCodePostal = 'SELECT * FROM users WHERE codePostal= ?'
 
+exports.getClientByName = 'SELECT * FROM users WHERE nom= ? '
 
 //create client
 exports.createClient = `INSERT INTO users 

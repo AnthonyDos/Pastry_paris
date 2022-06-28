@@ -133,7 +133,7 @@ exports.getAllClients = (req, res) =>{
         connection.query(client.getAllClientByCodePostal,[codePostal],(error,results)=>{
             if (results[0]) {
                 res.status(201).json({results :results, message : httpRequestMessages.successGetAllClientByCodePostal})
-            }else if(results[0] === null){
+            }else if(results === null){
                 res.status(400).json({error:error,message: httpRequestMessages.errorGetAllClient})
             }else{
                 res.status(400).json({error:error,message: httpRequestMessages.errorGetAllClient})
@@ -174,7 +174,7 @@ exports.getClientByCritere = (req, res) =>{
         if(nom.length < 3){
             res.status(400).json({ message : httpRequestMessages.errorRechercheByNomCaractereMin3})
         }else{
-            connection.query(`SELECT * FROM users WHERE  nom LIKE '${nom}%' `,(error, result, fields)=>{
+            connection.query(client.getClientByName,[nom],(error, result, fields)=>{
                 if (result.length > 0) {
                     res.status(201).json({result :result, message : httpRequestMessages.successGetClientByNom})
                 }else if(result.length === null || result.length < 0){                 
