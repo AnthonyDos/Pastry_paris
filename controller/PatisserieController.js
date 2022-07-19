@@ -1,11 +1,15 @@
 const connection = require('../config/sql/db.config');
 const patisserie = require('../service/PatisserieService');
 const httpRequestMessagesPatisserie = require('../httpRequestMessages/HttpRequestMessagesPatisserie');
+const fs = require('fs')
+require('dotenv').config();
 
 exports.createPatisserie = (req, res)=>{
-    const {nomProduit, ingredients, prix, numeroProduit, idBoutique} = req.body
-    const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file?.filename}`
-    connection.query(patisserie.createPatisserie,[idBoutique,nomProduit, ingredients, prix,numeroProduit, imageUrl], (error, result)=>{
+    const {nomProduit, ingredients, prix, idBoutique} = req.body
+    const image = req.body.imageUrl
+    const imageUrl = `${req.protocol}://${req.get('host')}/images/${image}`
+    connection.query(patisserie.createPatisserie,[1,nomProduit, ingredients, prix,idBoutique, imageUrl], (error, result)=>{
+        console.log(imageUrl)
         if(error){
             res.status(400).json({error: error, message: httpRequestMessagesPatisserie.errorCreatePatisserie})
         }else{
@@ -53,9 +57,9 @@ exports.updatePatisserie = (req,res)=>{
         connection.query(patisserie.getPatisserieByIdPatisserie,[id_patisserie],(error,result)=>{
             if(result.length > 0){
                 const {id_patisserie, idBoutique} = result[0] 
-                const {nomProduit, ingredients, prix, numeroProduit} = req.body
+                const {nomProduit, ingredients, prix} = req.body
                 const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file?.filename}`
-                connection.query(patisserie.updatePatisserieByIdPatisserie,[nomProduit,ingredients,prix, numeroProduit,idBoutique,imageUrl, id_patisserie],(error,result)=>{
+                connection.query(patisserie.updatePatisserieByIdPatisserie,[nomProduit,ingredients,prix,idBoutique,imageUrl, id_patisserie],(error,result)=>{
                     if(error){
                         res.status(400).json({error: error, message:httpRequestMessagesPatisserie.errorUpdatePatisserie})
                     }else{

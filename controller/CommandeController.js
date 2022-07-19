@@ -148,9 +148,9 @@ exports.getCommandByIdBoutiqueAndNumeroCommand = (req,res)=>{
     })
 }
 
-exports.getCommandByNumeroClient = (req,res)=>{
-    const { numero_client } = req.params
-    connection.query(commande.getCommandeByNumeroClient,[numero_client],(error,result)=>{
+exports.getCommandByIdClient = (req,res)=>{
+    const { id_user } = req.params
+    connection.query(commande.getCommandByIdClient,[id_user],(error,result)=>{
         if(result < 1 ){
             res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByNumeroClient})
         }else{
@@ -254,4 +254,3 @@ exports.deleteCommandeById = (req, res)=>{
         }
     })
 }
-

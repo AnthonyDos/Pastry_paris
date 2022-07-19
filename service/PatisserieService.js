@@ -1,6 +1,6 @@
 //création pâtisserie
 exports.createPatisserie = `INSERT INTO patisseries 
-SET idBoutique= ?, nomProduit= ?, ingredients= ?, prix= ?,numeroProduit= ?, imageUrl= ?`
+SET id_admin=?, nomProduit= ?, ingredients= ?, prix= ?, idBoutique= ?, imageUrl= ?`
 
 //get pâtisserie
 exports.getAllPatisseries = "SELECT * FROM patisseries"

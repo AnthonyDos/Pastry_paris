@@ -10,7 +10,7 @@ router.get('/getAllCommande/ville/:ville', auth, commande.getCommandByVille);
 router.get('/getAllCommande/boutique/:idBoutique', auth, commande.getCommandByIdBoutique);
 router.get('/getCommande/boutique/:idBoutique/numero_commande/:numeroCommande', auth, commande.getCommandByIdBoutiqueAndNumeroCommand);
 router.get('/getCommande/idCommande/:id_commande', auth, commande.getCommandByIdCommand);
-router.get('/getCommande/numero_client/:numero_client', auth, commande.getCommandByNumeroClient);
+router.get('/getCommande/id_client/:id_user', auth, commande.getCommandByIdClient);
 router.get('/getCommande/numero_commande/:numeroCommande', auth, commande.getCommandByNumeroCommande);
 router.get('/getCommande/telephone/:phone', auth, commande.getCommandByPhone);
 router.get('/getCommande/date/:dateCommande', auth, commande.getCommandByDateCommande); 
