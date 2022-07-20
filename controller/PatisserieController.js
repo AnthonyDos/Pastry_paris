@@ -6,14 +6,12 @@ require('dotenv').config();
 
 exports.createPatisserie = (req, res)=>{
     const {nomProduit, ingredients, prix, idBoutique} = req.body
-    const image = req.body.imageUrl
-    const imageUrl = `${req.protocol}://${req.get('host')}/images/${image}`
+    const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file?.filename}`
     connection.query(patisserie.createPatisserie,[1,nomProduit, ingredients, prix,idBoutique, imageUrl], (error, result)=>{
-        console.log(imageUrl)
         if(error){
             res.status(400).json({error: error, message: httpRequestMessagesPatisserie.errorCreatePatisserie})
         }else{
-            res.status(200).json({result: result, message: httpRequestMessagesPatisserie.successCreatePatisserie})
+            res.status(200).json({result, message: httpRequestMessagesPatisserie.successCreatePatisserie})
         }
     })
 }
