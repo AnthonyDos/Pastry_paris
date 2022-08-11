@@ -3,7 +3,7 @@ exports.createPatisserie = `INSERT INTO patisseries
 SET id_admin=?, nomProduit= ?, ingredients= ?, prix= ?, idBoutique= ?, imageUrl= ?`
 
 //get pâtisserie
-exports.getAllPatisseries = `SELECT * FROM patisseries 
+exports.getAllPatisseries = `SELECT *, patisseries.id_patisserie FROM patisseries 
 INNER JOIN boutiques 
 ON patisseries.idBoutique = boutiques.idBoutique`
 
