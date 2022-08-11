@@ -15,6 +15,7 @@ exports.successGetCommandByDateCommande = "Commandes récupéré par la date de 
 exports.successUpdateCommandeByCriteres = " Commande modifié avec succés !"
 
 exports.successDeleteCommande = "Suppression de la commande avec succés !"
+exports.getCommandNull = "le client n'a aucune commande!"
 
 //error
 exports.errorCreateCommande = "La création de commande à échouée!"

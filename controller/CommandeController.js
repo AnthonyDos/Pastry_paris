@@ -151,11 +151,14 @@ exports.getCommandByIdBoutiqueAndNumeroCommand = (req,res)=>{
 exports.getCommandByIdClient = (req,res)=>{
     const { id_user } = req.params
     connection.query(commande.getCommandByIdClient,[id_user],(error,result)=>{
-        if(result < 1 ){
+        if (error) {
             res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByNumeroClient})
         }else{
-            console.log(result)
-            res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByNumeroClient})
+            if(result < 1 ){
+                res.status(201).json({result : result, message: httpRequestMessagesCommande.getCommandNull})
+            }else{
+                res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByNumeroClient})
+            }
         }
     })
 }
