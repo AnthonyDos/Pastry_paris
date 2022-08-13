@@ -11,6 +11,7 @@ router.get('/getAllCommande/boutique/:idBoutique', auth, commande.getCommandById
 router.get('/getCommande/boutique/:idBoutique/numero_commande/:numeroCommande', auth, commande.getCommandByIdBoutiqueAndNumeroCommand);
 router.get('/getCommande/idCommande/:id_commande', auth, commande.getCommandByIdCommand);
 router.get('/getCommande/id_client/:id_user', auth, commande.getCommandByIdClient);
+router.get('/getCommande/admin/id_client/:id_user', auth, commande.getCommandAdminByIdClient);
 router.get('/getCommande/numero_commande/:numeroCommande', auth, commande.getCommandByNumeroCommande);
 router.get('/getCommande/telephone/:phone', auth, commande.getCommandByPhone);
 router.get('/getCommande/date/:dateCommande', auth, commande.getCommandByDateCommande); 

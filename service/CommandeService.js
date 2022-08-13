@@ -70,7 +70,7 @@ WHERE boutiques.idBoutique= ? AND commandes.numeroCommande=  ?`
 
 ///FIN
 
-exports.getCommandByIdClient =`SELECT *, DATE_FORMAT(commandes.dateDuJour, '%d/%m/%Y') AS dateDuJour,DATE_FORMAT(commandes.dateCommande, '%d/%m/%Y') AS dateCommande 
+exports.getCommandByIdClient =`SELECT *,commandes.id_commande, DATE_FORMAT(commandes.dateDuJour, '%d/%m/%Y') AS dateDuJour,DATE_FORMAT(commandes.dateCommande, '%d/%m/%Y') AS dateCommande 
 FROM commandes 
 INNER JOIN users ON commandes.id_user = users.id_user 
 INNER JOIN boutiques ON commandes.idBoutique = boutiques.idBoutique

@@ -150,12 +150,27 @@ exports.getCommandByIdBoutiqueAndNumeroCommand = (req,res)=>{
 
 exports.getCommandByIdClient = (req,res)=>{
     const { id_user } = req.params
-    connection.query(commande.getCommandByIdClient,[id_user],(error,result)=>{
+    connection.query(commande.getCommandByIdClient, [id_user], (error, result) => {
+        if (error) {
+            res.status(400).json({ error: error, message: httpRequestMessagesCommande.errorGetCommandByNumeroClient })
+        } else {
+            if(result.length < 1 ){
+                res.status(202).json({result : result, message: httpRequestMessagesCommande.getCommandNull})
+            }else{
+                res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByNumeroClient})
+            }
+        }
+    })
+}
+
+exports.getCommandAdminByIdClient = (req,res)=>{
+    const { id_user } = req.params
+    connection.query(commande.getCommandByIdClient,[id_user],(error,result) => {
         if (error) {
             res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByNumeroClient})
         }else{
-            if(result < 1 ){
-                res.status(201).json({result : result, message: httpRequestMessagesCommande.getCommandNull})
+            if(result.length < 1 ){
+                res.status(202).json({result : result, message: httpRequestMessagesCommande.getCommandNull})
             }else{
                 res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByNumeroClient})
             }
