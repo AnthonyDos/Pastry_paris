@@ -5,12 +5,14 @@ const fs = require('fs')
 require('dotenv').config();
 
 exports.createPatisserie = (req, res)=>{
-    const {nomProduit, ingredients, prix, idBoutique} = req.body
+    const {nomProduit, ingredients, prix, idBoutique, gammeProduit} = req.body
     const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file?.filename}`
-    connection.query(patisserie.createPatisserie,[1,nomProduit, ingredients, prix,idBoutique, imageUrl], (error, result)=>{
+    connection.query(patisserie.createPatisserie,[1,nomProduit, ingredients, prix,idBoutique,gammeProduit, imageUrl], (error, result)=>{
         if(error){
+            console.log({error: error})
             res.status(400).json({error: error, message: httpRequestMessagesPatisserie.errorCreatePatisserie})
         }else{
+            console.log(result)
             res.status(200).json({result, message: httpRequestMessagesPatisserie.successCreatePatisserie})
         }
     })
@@ -21,6 +23,20 @@ exports.getAllPatisserie = (req, res)=>{
         if(error){
             res.status(400).json({error: error, message: httpRequestMessagesPatisserie.errorGetAllPatisseries})
         }else{
+            res.status(200).json({result: result, message: httpRequestMessagesPatisserie.successGetAllPatisseries})
+        }
+    })
+}
+
+exports.getGammePatisserie = (req, res)=>{
+    const gammeProduit = req.params.gammeProduit;
+    console.log(gammeProduit)
+    connection.query(patisserie.getGammePatisserie,[gammeProduit],(error,result)=>{
+        if(error){
+            console.log({error: error})
+            res.status(400).json({error: error, message: httpRequestMessagesPatisserie.errorGetAllPatisseries})
+        }else{
+            console.log(result)
             res.status(200).json({result: result, message: httpRequestMessagesPatisserie.successGetAllPatisseries})
         }
     })
@@ -55,9 +71,9 @@ exports.updatePatisserie = (req,res)=>{
         connection.query(patisserie.getPatisserieByIdPatisserie,[id_patisserie],(error,result)=>{
             if(result.length > 0){
                 const {id_patisserie, idBoutique} = result[0] 
-                const {nomProduit, ingredients, prix} = req.body
+                const {nomProduit, ingredients, prix, gammeProduit} = req.body
                 const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file?.filename}`
-                connection.query(patisserie.updatePatisserieByIdPatisserie,[nomProduit,ingredients,prix,idBoutique,imageUrl, id_patisserie],(error,result)=>{
+                connection.query(patisserie.updatePatisserieByIdPatisserie,[nomProduit,ingredients,prix,gammeProduit,idBoutique,imageUrl, id_patisserie],(error,result)=>{
                     if(error){
                         res.status(400).json({error: error, message:httpRequestMessagesPatisserie.errorUpdatePatisserie})
                     }else{

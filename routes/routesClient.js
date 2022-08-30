@@ -7,7 +7,6 @@ router.post('/auth/createClient', client.createClient); //création d'un client
 router.post('/auth/loginClient', client.connectClient); //connexion compte client
 router.get('/getAllClients',auth, client.getAllClients); //tous les clients
 //router.get('/getAllClients/:idBoutique/clients'); //get tous les clients par boutique
-router.get('/getAllClients/:codePostal',auth, client.getAllClients); // get tous les clients par département
 //router.get('/getClient/:idBoutique/:id');
 router.get('/getClient/nom/:nom',auth, client.getClientByCritere); //get client par nom 3 caractères min
 router.get('/getClient/id/:id_user',auth, client.getClientByCritere); //get client par id

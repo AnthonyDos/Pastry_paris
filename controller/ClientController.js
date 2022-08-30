@@ -164,7 +164,7 @@ exports.getClientByCritere = (req, res) =>{
         })
     }else if(phone){
         connection.query(client.getClientByPhone,[phone],(error, result, fields)=>{
-            if (result != undefined) {
+            if (result.length > 0) {
                 res.status(201).json({result :result, message : httpRequestMessages.successGetClientByNumeroPhone})
             }else{                 
                 res.status(400).json({error:error,message: httpRequestMessages.errorAucunClientByNumeroTelephone})

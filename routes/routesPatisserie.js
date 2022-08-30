@@ -6,6 +6,7 @@ const multer = require('../middleware/multer-config');
 
 router.post('/createPatisserie', auth,multer, patisserie.createPatisserie); //création pâtisserie
 router.get('/all-patisseries', auth,multer, patisserie.getAllPatisserie) ;
+router.get('/getPatisserie/patisserie/gamme_produit/:gammeProduit', patisserie.getGammePatisserie);
 router.get('/getPatisserie/patisserie/:id_patisserie', auth, multer, patisserie.getPatisserieByCritere);
 router.get('/getPatisserie/boutique/:idBoutique', auth, multer, patisserie.getPatisserieByCritere);
 router.put('/putPatisserie/patisserie/:id_patisserie', auth, multer,patisserie.updatePatisserie);

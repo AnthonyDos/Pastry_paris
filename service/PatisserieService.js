@@ -1,11 +1,14 @@
 //création pâtisserie
 exports.createPatisserie = `INSERT INTO patisseries 
-SET id_admin=?, nomProduit= ?, ingredients= ?, prix= ?, idBoutique= ?, imageUrl= ?`
+SET id_admin=?, nomProduit= ?, ingredients= ?, prix= ?, idBoutique= ?,gammeProduit= ?, imageUrl= ?`
 
 //get pâtisserie
 exports.getAllPatisseries = `SELECT *, patisseries.id_patisserie FROM patisseries 
 INNER JOIN boutiques 
 ON patisseries.idBoutique = boutiques.idBoutique`
+
+//get pâtisserie by gamme
+exports.getGammePatisserie = `SELECT * FROM patisseries WHERE gammeProduit= ?`
 
 exports.getPatisserieByIdPatisserie = "SELECT * FROM patisseries WHERE id_patisserie= ?"
 
@@ -16,7 +19,7 @@ WHERE boutiques.idBoutique= ?`
 
 //Update pâtisserie
 exports.updatePatisserieByIdPatisserie = `UPDATE patisseries 
-SET nomProduit= ?, ingredients= ?, prix= ?, numeroProduit= ? , idBoutique= ? , imageUrl= ? 
+SET nomProduit= ?, ingredients= ?, prix= ?, numeroProduit= ? , idBoutique= ? ,gammeProduit= ?, imageUrl= ? 
 WHERE id_patisserie= ?`
 
 //Delete pâtisserie

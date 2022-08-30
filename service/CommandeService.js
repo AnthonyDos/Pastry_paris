@@ -4,7 +4,10 @@ exports.createCommande = `INSERT INTO commandes SET dateDuJour= CURDATE(),dateCo
 id_user= ?, livraison= ?, prixTotal= ?, idBoutique= ?, isAdmin= 1,patisseriesList= ?, id_patisserie= ?`
 
 //get commande by critères
-exports.getAllCommandes = `SELECT *, DATE_FORMAT(commandes.dateDuJour, '%d/%m/%Y') AS dateDuJour, DATE_FORMAT(commandes.dateCommande, '%d/%m/%Y') AS dateCommande 
+// exports.getAllCommandes = `SELECT *, DATE_FORMAT(commandes.dateDuJour, '%d/%m/%Y') AS dateDuJour, DATE_FORMAT(commandes.dateCommande, '%d/%m/%Y') AS dateCommande 
+// FROM commandes INNER JOIN users ON commandes.id_user= users.id_user ORDER BY commandes.dateDuJour DESC;`
+
+exports.getAllCommandes = `SELECT *,DATE_FORMAT(commandes.dateDuJour, '%Y-%m-%d') AS dateDuJour,  DATE_FORMAT(commandes.dateCommande, '%d/%m/%Y') AS dateCommande 
 FROM commandes INNER JOIN users ON commandes.id_user= users.id_user ORDER BY commandes.dateDuJour DESC;`
 
 exports.getCommandeById = "SELECT * FROM commandes WHERE id_commande= ?"
@@ -90,7 +93,7 @@ WHERE users.id_user= ? ORDER BY commandes.dateDuJour DESC`
 // INNER JOIN boutiques ON patisseries.idBoutique = boutiques.idBoutique 
 // WHERE numeroCommande= ?`
 
-exports.getCommandeByNumeroCommande = `SELECT *, DATE_FORMAT(commandes.dateDuJour, '%d/%m/%Y') AS dateDuJour,boutiques.idBoutique,
+exports.getCommandeByNumeroCommande = `SELECT *, commandes.id_commande, DATE_FORMAT(commandes.dateDuJour, '%d/%m/%Y') AS dateDuJour,boutiques.idBoutique,
 boutiques.nomBoutique,boutiques.adresse,boutiques.adresse,boutiques.ville,boutiques.codePostal,
 boutiques.pays,boutiques.phone,boutiques.horaire,boutiques.id_reservation
 FROM commandes

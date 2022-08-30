@@ -118,7 +118,7 @@ exports.getCommandByVille = (req,res)=>{
 exports.getCommandByVilleAndIdBoutique = (req,res)=>{
     const {ville, idBoutique} = req.params
     connection.query(commande.getCommandeByVilleAndIdBoutique,[ville, idBoutique],(error,result)=>{
-        if(result.length < 1){
+        if(result < 1){
             res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByVilleAndIdBoutique})
         }else{
             res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByVilleAndIdBoutique})
@@ -151,14 +151,11 @@ exports.getCommandByIdBoutiqueAndNumeroCommand = (req,res)=>{
 exports.getCommandByIdClient = (req,res)=>{
     const { id_user } = req.params
     connection.query(commande.getCommandByIdClient, [id_user], (error, result) => {
-        if (error) {
-            res.status(400).json({ error: error, message: httpRequestMessagesCommande.errorGetCommandByNumeroClient })
-        } else {
-            if(result.length < 1 ){
-                res.status(202).json({result : result, message: httpRequestMessagesCommande.getCommandNull})
-            }else{
-                res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByNumeroClient})
-            }
+        if (result < 1 ) {
+            console.log(result)
+            res.status(400).json({ error: error, message: httpRequestMessagesCommande.getCommandNull })
+        }else{
+            res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByNumeroClient})
         }
     })
 }
@@ -166,24 +163,21 @@ exports.getCommandByIdClient = (req,res)=>{
 exports.getCommandAdminByIdClient = (req,res)=>{
     const { id_user } = req.params
     connection.query(commande.getCommandByIdClient,[id_user],(error,result) => {
-        if (error) {
-            res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByNumeroClient})
+        if (result < 1) {
+            console.log(result)
+            res.status(400).json({error: error, message: httpRequestMessagesCommande.getCommandNull})
         }else{
-            if(result.length < 1 ){
-                res.status(202).json({result : result, message: httpRequestMessagesCommande.getCommandNull})
-            }else{
-                res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByNumeroClient})
-            }
+            res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByNumeroClient})
         }
     })
 }
 exports.getCommandByNumeroCommande = (req,res)=>{
     const {numeroCommande, idBoutique} = req.params
-    console.log(numeroCommande)
     connection.query(commande.getCommandeByNumeroCommande,[numeroCommande,idBoutique],(error,result)=>{
-        if(result === undefined || result === null){
-            res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetCommandByNumeroCommande})
-        }else{
+        if(result < 1){
+            res.status(400).json({error: error, message: httpRequestMessagesCommande.getAllCommandNull})
+        }else{ 
+            console.log({result : result})
             res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetCommandByNumeroCommande})
         }    
     })
@@ -212,10 +206,14 @@ exports.getCommandByDateCommande = (req,res)=>{
 
 exports.getCommandByAllCommande = (req,res)=>{
     connection.query(commande.getAllCommandes,(error,result)=>{
-        if(result < 1){
+        if (error) {
             res.status(400).json({error: error, message: httpRequestMessagesCommande.errorGetAllCommand})
         }else{
-            res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetAllCommand})
+            if(result.length < 1){
+                res.status(202).json({result : result, message: httpRequestMessagesCommande.getAllCommandNull})
+            }else{
+                res.status(201).json({result : result, message: httpRequestMessagesCommande.successGetAllCommand})
+            }
         }
     })
 }
