@@ -5,9 +5,9 @@ const fs = require('fs')
 require('dotenv').config();
 
 exports.createPatisserie = (req, res)=>{
-    const {nomProduit, ingredients, prix, idBoutique, gammeProduit} = req.body
+    const {nomProduit, ingredients, prix, gammeProduit, allergenes} = req.body
     const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file?.filename}`
-    connection.query(patisserie.createPatisserie,[1,nomProduit, ingredients, prix,idBoutique,gammeProduit, imageUrl], (error, result)=>{
+    connection.query(patisserie.createPatisserie,[1,nomProduit, ingredients, prix,gammeProduit,allergenes, imageUrl], (error, result)=>{
         if(error){
             console.log({error: error})
             res.status(400).json({error: error, message: httpRequestMessagesPatisserie.errorCreatePatisserie})
@@ -43,8 +43,8 @@ exports.getGammePatisserie = (req, res)=>{
 }
 
 exports.getPatisserieByCritere = (req,res)=>{
-    const {id_patisserie, idBoutique} = req.params 
-    if(id_patisserie != undefined && idBoutique === undefined){
+    const {id_patisserie} = req.params 
+    //if(id_patisserie != undefined && idBoutique === undefined){
         connection.query(patisserie.getPatisserieByIdPatisserie,[id_patisserie],(error,result)=>{
             if(result.length > 0){
                 res.status(201).json({result: result, message: httpRequestMessagesPatisserie.successGetPatisserieByCriteres})
@@ -52,17 +52,17 @@ exports.getPatisserieByCritere = (req,res)=>{
                 res.status(400).json({error: error, message: httpRequestMessagesPatisserie.errorGetPatisserieByCriteres})
             }
         })
-    }else if(idBoutique != undefined && id_patisserie === undefined){
-        connection.query(patisserie.getPatisserieByIdBoutique,[idBoutique],(error,result)=>{
-            if(result.length > 0){
-                res.status(201).json({result: result, message: httpRequestMessagesPatisserie.successGetPatisserieByCriteres})
-            }else{
-                res.status(400).json({error: error, message: httpRequestMessagesPatisserie.errorGetPatisserieByCriteres})
-            }
-        })
-    }else{
-        res.status(400).json({message: httpRequestMessagesPatisserie.errorGetPatisserie})  
-    }
+    // }else if(idBoutique != undefined && id_patisserie === undefined){
+    //     connection.query(patisserie.getPatisserieByIdBoutique,[idBoutique],(error,result)=>{
+    //         if(result.length > 0){
+    //             res.status(201).json({result: result, message: httpRequestMessagesPatisserie.successGetPatisserieByCriteres})
+    //         }else{
+    //             res.status(400).json({error: error, message: httpRequestMessagesPatisserie.errorGetPatisserieByCriteres})
+    //         }
+    //     })
+    // }else{
+    //     res.status(400).json({message: httpRequestMessagesPatisserie.errorGetPatisserie})  
+    // }
 }
 
 exports.updatePatisserie = (req,res)=>{

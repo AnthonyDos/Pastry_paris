@@ -8,7 +8,7 @@ router.post('/createPatisserie', auth,multer, patisserie.createPatisserie); //cr
 router.get('/all-patisseries', auth,multer, patisserie.getAllPatisserie) ;
 router.get('/getPatisserie/patisserie/gamme_produit/:gammeProduit', patisserie.getGammePatisserie);
 router.get('/getPatisserie/patisserie/:id_patisserie', auth, multer, patisserie.getPatisserieByCritere);
-router.get('/getPatisserie/boutique/:idBoutique', auth, multer, patisserie.getPatisserieByCritere);
+//router.get('/getPatisserie/boutique/:idBoutique', auth, multer, patisserie.getPatisserieByCritere);
 router.put('/putPatisserie/patisserie/:id_patisserie', auth, multer,patisserie.updatePatisserie);
 router.delete('/deletePatisserie/:id_patisserie', auth, patisserie.deletePatisserie);
 
