@@ -1,6 +1,6 @@
 //création d'une boutique
 exports.createBoutique = `INSERT INTO boutiques 
-SET nomBoutique= ?, adresse= ?, ville= ?, codePostal= ?, pays= ?, phone= ?, horaire= ?`
+SET nomBoutique= ?, adresse= ?, ville= ?, codePostal= ?, pays= ?, phone= ?, horaire= ?, imageUrl= ?, placeDisponible= ?`
 
 //get boutique
 exports.getAllBoutiques = "SELECT * FROM boutiques"

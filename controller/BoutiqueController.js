@@ -1,18 +1,24 @@
 const connection = require('../config/sql/db.config');
 const boutique = require('../service/BoutiqueService');
 const httpRequestMessagesBoutique = require('../httpRequestMessages/HttpRequestMessagesBoutique');
+const fs = require('fs')
+require('dotenv').config();
 
 exports.createBoutique = (req, res)=>{
-    const { nomBoutique, adresse, ville, codePostal, pays, phone, horaire} = req.body
-    connection.query(boutique.createBoutique,[nomBoutique, adresse, ville, codePostal, pays, phone, horaire],(error,results)=>{
+    const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file?.filename}`
+    console.log(imageUrl)
+    const { nomBoutique, adresse, ville, codePostal, pays, phone, horaire,placeDisponible} = req.body
+    connection.query(boutique.createBoutique,[nomBoutique, adresse, ville, codePostal, pays, phone, horaire, imageUrl,placeDisponible],(error,results)=>{
+        console.log({error: error})
+        console.log({results: results})
         if(error){
             res.status(400).json({error: error, message: httpRequestMessagesBoutique.errorCreateBoutique})
         }else{
             res.status(201).json({results: results, message: httpRequestMessagesBoutique.successCreateBoutique})
         }
-    })
+    }) 
 }
-
+ 
 exports.getAllBoutiques = (req, res)=>{
     connection.query(boutique.getAllBoutiques,(error,results)=>{
         if(error){
