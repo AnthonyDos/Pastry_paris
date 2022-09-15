@@ -4,6 +4,7 @@ SET nomBoutique= ?, adresse= ?, ville= ?, codePostal= ?, pays= ?, phone= ?, hora
 
 //get boutique
 exports.getAllBoutiques = "SELECT * FROM boutiques"
+exports.getAllBoutiquesPublic = "SELECT boutiques.idBoutique, boutiques.nomBoutique FROM boutiques"
 exports.getBoutiqueByIdBoutique = "SELECT * FROM boutiques WHERE idBoutique= ?"
 exports.getBoutiqueByVille = "SELECT * FROM boutiques WHERE ville= ?"
 exports.getBoutiqueByPays = "SELECT * FROM boutiques WHERE pays= ?"
